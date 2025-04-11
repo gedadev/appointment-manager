@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const generateToken = require("../utils/generateToken");
 
 const router = express.Router();
 
@@ -23,7 +24,10 @@ router.post("/create", async (req, res) => {
       businessSlug: businessName.toLowerCase().replace(/\s+/g, "-"),
     });
 
-    res.status(201).send("User created successfully");
+    res.status(201).json({
+      userId: user._id,
+      token: generateToken(user._id),
+    });
   } catch {
     res.status(500).send();
   }
@@ -40,7 +44,10 @@ router.post("/login", async (req, res) => {
 
     if (!isMatch) return res.status(400).send("Login Failed");
 
-    res.send("Login success");
+    res.json({
+      userId: foundUser._id,
+      token: generateToken(foundUser._id),
+    });
   } catch {
     res.status(500).send();
   }
