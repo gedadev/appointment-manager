@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const connectDB = require("./config/db");
 const User = require("./models/User");
+const bcrypt = require("bcryptjs");
 
 const app = express();
 app.use(express.json());
@@ -14,18 +15,27 @@ app.get("/", (req, res) => {
 
 app.post("/create", async (req, res) => {
   const { name, email, password, businessName } = req.body;
+  const foundUser = await User.findOne({ email });
+  const foundBusiness = await User.findOne({ businessName });
 
-  const passwordHash = password;
+  if (foundUser) return res.status(400).send("User already registered");
+  if (foundBusiness) return res.status(400).send("Business already registered");
 
-  const user = await User.create({
-    name,
-    email,
-    passwordHash,
-    businessName,
-    businessSlug: businessName.toLowerCase().replace(/\s+/g, "-"),
-  });
+  try {
+    const passwordHash = await bcrypt.hash(password, 10);
 
-  res.status(201).send("User created successfully");
+    const user = await User.create({
+      name,
+      email,
+      passwordHash,
+      businessName,
+      businessSlug: businessName.toLowerCase().replace(/\s+/g, "-"),
+    });
+
+    res.status(201).send("User created successfully");
+  } catch {
+    res.status(500).send();
+  }
 });
 
 const PORT = 3000;
