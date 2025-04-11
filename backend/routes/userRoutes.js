@@ -2,6 +2,7 @@ const express = require("express");
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const generateToken = require("../utils/generateToken");
+const authUser = require("../middleware/authUser");
 
 const router = express.Router();
 
@@ -51,6 +52,10 @@ router.post("/login", async (req, res) => {
   } catch {
     res.status(500).send();
   }
+});
+
+router.get("/profile", authUser, (req, res) => {
+  res.json(req.user);
 });
 
 module.exports = router;
