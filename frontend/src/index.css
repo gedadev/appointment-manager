@@ -1,0 +1,56 @@
+/* Reset CSS */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+
+:root {
+  --light: rgb(255, 255, 255);
+  --dark: rgb(34, 34, 34);
+  --gray: rgb(240, 240, 240);
+  --accent: rgb(51, 102, 255);
+  --error: rgb(255, 77, 77);
+}
+
+body {
+  background-color: var(--gray);
+}
