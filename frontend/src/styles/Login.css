@@ -1,0 +1,95 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: var(--gray);
+}
+
+.login-card {
+  width: 100%;
+  max-width: 450px;
+  padding: 30px;
+  background-color: var(--light);
+  border-radius: 8px;
+  box-shadow: 0 4px 6px var(--transparent);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.login-card h1,
+.login-card p {
+  text-align: center;
+}
+
+.login-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-group {
+  position: relative;
+}
+
+.form-group label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.form-group svg {
+  font-size: 1.7rem;
+  height: 100%;
+  margin: 0.2rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.8rem 1rem 0.6rem 3rem;
+  border: none;
+  border-bottom: 1px solid var(--transparent);
+  font-size: 16px;
+  transition: border-color 0.3s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.login-button {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--accent);
+  color: var(--light);
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+
+.login-button:hover {
+  background-color: var(--accent-alt);
+  box-shadow: 0 0 8px var(--accent-alt);
+}
+
+.login-button:disabled {
+  background-color: #a0b8ff;
+  color: var(--dark);
+  cursor: not-allowed;
+}
+
+.signup-link a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
