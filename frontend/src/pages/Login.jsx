@@ -2,20 +2,20 @@ import { useState } from "react";
 import "../styles/Login.css";
 import { MdOutlineEmail } from "react-icons/md";
 import { MdOutlineLock } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const { login, loading } = useAuth();
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    const { success } = await login(email, password);
+    if (success) navigate("/dashboard");
   };
 
   return (
@@ -50,8 +50,8 @@ export default function Login() {
               placeholder="Enter your password"
             />
           </div>
-          <button type="submit" className="login-button" disabled={isLoading}>
-            {isLoading ? "Logging in..." : "Login"}
+          <button type="submit" className="login-button" disabled={loading}>
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
         <div className="signup-link">
