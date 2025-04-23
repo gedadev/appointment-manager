@@ -1,4 +1,5 @@
-.login-container {
+.login-container,
+.signup-container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -7,7 +8,8 @@
   background-color: var(--gray);
 }
 
-.login-card {
+.login-card,
+.signup-card {
   width: 100%;
   max-width: 450px;
   padding: 30px;
@@ -20,21 +22,44 @@
 }
 
 .login-card h1,
-.login-card p {
+.login-card p,
+.signup-card h1,
+.signup-card p {
   text-align: center;
 }
 
-.login-card form {
+.login-card form,
+.signup-card form {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
 }
 
-.form-group {
+.signup-card form {
+  margin: 0.5rem 0;
+}
+
+.signup-card .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.signup-card .form-group label {
+  position: static;
+  transform: none;
+  font-size: 0.9rem;
+}
+
+.signup-card .form-group input {
+  padding: 0.5rem 0;
+  font-size: 0.85rem;
+}
+
+.login-card .form-group {
   position: relative;
 }
 
-.form-group label {
+.login-card .form-group label {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -60,7 +85,8 @@
   border-color: var(--accent);
 }
 
-.login-button {
+.login-button,
+.signup-button {
   width: 100%;
   padding: 12px;
   background-color: var(--accent);
@@ -73,23 +99,27 @@
   transition: all 0.3s ease-out;
 }
 
-.login-button:hover {
+.login-button:hover,
+.signup-button:hover {
   background-color: var(--accent-alt);
   box-shadow: 0 0 8px var(--accent-alt);
 }
 
-.login-button:disabled {
+.login-button:disabled,
+.signup-button:disabled {
   background-color: #a0b8ff;
   color: var(--dark);
   cursor: not-allowed;
 }
 
-.signup-link a {
+.signup-link a,
+.login-link a {
   color: var(--accent);
   text-decoration: none;
   font-weight: 600;
 }
 
-.signup-link a:hover {
+.signup-link a:hover,
+.login-link a:hover {
   text-decoration: underline;
 }
