@@ -11,8 +11,10 @@ router.post("/create", async (req, res) => {
   const foundUser = await User.findOne({ email });
   const foundBusiness = await User.findOne({ businessName });
 
-  if (foundUser) return res.status(400).send("User already registered");
-  if (foundBusiness) return res.status(400).send("Business already registered");
+  if (foundUser)
+    return res.status(400).json({ message: "Email already registered" });
+  if (foundBusiness)
+    return res.status(400).json({ message: "Business already registered" });
 
   try {
     const passwordHash = await bcrypt.hash(password, 10);
@@ -30,7 +32,7 @@ router.post("/create", async (req, res) => {
       token: generateToken(user._id),
     });
   } catch {
-    res.status(500).send();
+    res.status(500).json({ message: "User creation failed" });
   }
 });
 
