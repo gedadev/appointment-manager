@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -8,7 +9,8 @@ export default function Signup() {
     password: "",
     businessName: "",
   });
-  const [isLoading, setIsLoading] = useState(false);
+  const { signup, loading } = useAuth();
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -18,13 +20,11 @@ export default function Signup() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+    const { success } = await signup(formData);
+    if (success) navigate("/dashboard");
   };
 
   return (
@@ -43,7 +43,7 @@ export default function Signup() {
               onChange={handleChange}
               required
               placeholder="Enter your full name"
-              disabled={isLoading}
+              disabled={loading}
             />
           </div>
           <div className="form-group">
@@ -56,7 +56,7 @@ export default function Signup() {
               onChange={handleChange}
               required
               placeholder="Enter your business name"
-              disabled={isLoading}
+              disabled={loading}
             />
           </div>
           <div className="form-group">
@@ -69,7 +69,7 @@ export default function Signup() {
               onChange={handleChange}
               required
               placeholder="Enter your email"
-              disabled={isLoading}
+              disabled={loading}
             />
           </div>
           <div className="form-group">
@@ -82,11 +82,11 @@ export default function Signup() {
               onChange={handleChange}
               required
               placeholder="Create a password"
-              disabled={isLoading}
+              disabled={loading}
             />
           </div>
-          <button type="submit" className="signup-button" disabled={isLoading}>
-            {isLoading ? "Creating account..." : "Sign Up"}
+          <button type="submit" className="signup-button" disabled={loading}>
+            {loading ? "Creating account..." : "Sign Up"}
           </button>
         </form>
         <div className="login-link">
