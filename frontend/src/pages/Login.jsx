@@ -2,6 +2,7 @@ import { useState } from "react";
 import "../styles/Login.css";
 import { MdOutlineEmail } from "react-icons/md";
 import { MdOutlineLock } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -55,7 +56,7 @@ export default function Login() {
         </form>
         <div className="signup-link">
           <p>
-            Don't have an account? <a href="/signup">Create one</a>
+            Don't have an account? <Link to="/signup">Create one</Link>
           </p>
         </div>
       </div>
