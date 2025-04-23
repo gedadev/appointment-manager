@@ -38,19 +38,19 @@ router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   const foundUser = await User.findOne({ email });
 
-  if (!foundUser) return res.status(400).send("Login Failed");
+  if (!foundUser) return res.status(400).json({ message: "Login Failed" });
 
   try {
     const isMatch = await bcrypt.compare(password, foundUser.passwordHash);
 
-    if (!isMatch) return res.status(400).send("Login Failed");
+    if (!isMatch) throw new Error();
 
-    res.json({
+    res.status(200).json({
       userId: foundUser._id,
       token: generateToken(foundUser._id),
     });
   } catch {
-    res.status(500).send();
+    res.status(500).json({ message: "Login Failed" });
   }
 });
 
