@@ -50,12 +50,11 @@ h6 {
 
 :root {
   --light: rgb(255, 255, 255);
-  --dark: rgb(34, 34, 34);
-  --gray: rgb(240, 240, 240);
-  --accent: rgb(51, 102, 255);
+  --dark: rgb(28, 30, 38);
+  --gray: rgb(245, 247, 250);
+  --accent: rgb(47, 62, 158);
+  --accent-alt: rgb(85, 95, 160);
+  --second: rgb(167, 197, 235);
   --error: rgb(255, 77, 77);
-}
-
-body {
-  background-color: var(--gray);
+  --transparent: rgba(0, 0, 0, 0.2);
 }
