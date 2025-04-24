@@ -149,3 +149,7 @@
   box-shadow: 0 4px 6px var(--transparent);
   z-index: 1;
 }
+
+.signup-card .form-group span {
+  top: 100%;
+}

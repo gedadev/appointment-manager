@@ -3,6 +3,29 @@ import { useState } from "react";
 export const useFormValidations = () => {
   const [formError, setFormError] = useState(null);
 
+  const validateName = (name) => {
+    if (!name) {
+      setFormError({ message: "Enter your full name", input: "name" });
+      return false;
+    } else {
+      setFormError(null);
+      return true;
+    }
+  };
+
+  const validateBusinessName = (businessName) => {
+    if (!businessName) {
+      setFormError({
+        message: "Enter your business name",
+        input: "businessName",
+      });
+      return false;
+    } else {
+      setFormError(null);
+      return true;
+    }
+  };
+
   const validateEmail = (email) => {
     const emailRegex = /\b[\w.-]+@[\w.-]+\.\w{2,4}\b/;
 
@@ -53,7 +76,8 @@ export const useFormValidations = () => {
     }
   };
 
-  const validateForm = () => {
+  const validateForm = (formData) => {
+    console.log(formData);
     return false;
   };
 
@@ -61,6 +85,8 @@ export const useFormValidations = () => {
     validateForm,
     validateEmail,
     validatePassword,
+    validateName,
+    validateBusinessName,
     formError,
   };
 };
