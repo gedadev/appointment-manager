@@ -2,13 +2,14 @@ import { useState } from "react";
 import "../styles/Login.css";
 import { MdOutlineEmail } from "react-icons/md";
 import { MdOutlineLock } from "react-icons/md";
+import { MdError } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { login, loading } = useAuth();
+  const { login, loading, error } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -53,6 +54,12 @@ export default function Login() {
           <button type="submit" className="login-button" disabled={loading}>
             {loading ? "Logging in..." : "Login"}
           </button>
+          {error && (
+            <span>
+              <MdError />
+              {error}
+            </span>
+          )}
         </form>
         <div className="signup-link">
           <p>

@@ -28,6 +28,15 @@
   text-align: center;
 }
 
+.login-card span,
+.signup-card span {
+  color: var(--error);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
 .login-card form,
 .signup-card form {
   display: flex;

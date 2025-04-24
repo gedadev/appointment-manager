@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
+import { MdError } from "react-icons/md";
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -9,7 +10,7 @@ export default function Signup() {
     password: "",
     businessName: "",
   });
-  const { signup, loading } = useAuth();
+  const { signup, loading, error } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -88,6 +89,12 @@ export default function Signup() {
           <button type="submit" className="signup-button" disabled={loading}>
             {loading ? "Creating account..." : "Sign Up"}
           </button>
+          {error && (
+            <span>
+              <MdError />
+              {error}
+            </span>
+          )}
         </form>
         <div className="login-link">
           <p>
