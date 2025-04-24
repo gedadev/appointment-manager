@@ -60,7 +60,7 @@
 }
 
 .signup-card .form-group input {
-  padding: 0.5rem 0;
+  padding: 0.5rem 0.2rem;
   font-size: 0.85rem;
 }
 
@@ -152,4 +152,24 @@
 
 .signup-card .form-group span {
   top: 100%;
+}
+
+.toggle-password {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  margin: 0 0.4rem;
+  cursor: pointer;
+}
+
+.toggle-password svg {
+  font-size: 1.2rem;
+  color: var(--accent-alt);
+}
+
+.signup-card .toggle-password {
+  bottom: 0;
+  transform: translateY(0);
+  margin-bottom: 10px;
 }

@@ -3,6 +3,8 @@ import "../styles/Login.css";
 import { MdOutlineEmail } from "react-icons/md";
 import { MdOutlineLock } from "react-icons/md";
 import { MdError } from "react-icons/md";
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 import { useFormValidations } from "../hooks/useFormValidations";
@@ -10,6 +12,7 @@ import { useFormValidations } from "../hooks/useFormValidations";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [visiblePassword, setVisiblePassword] = useState(false);
   const { login, loading, error } = useAuth();
   const { validateEmail, validatePassword, formError, validateForm } =
     useFormValidations();
@@ -35,6 +38,10 @@ export default function Login() {
     const password = e.target.value;
     validatePassword(password);
     setPassword(password);
+  };
+
+  const togglePassword = () => {
+    setVisiblePassword(!visiblePassword);
   };
 
   return (
@@ -63,12 +70,15 @@ export default function Login() {
               <MdOutlineLock />
             </label>
             <input
-              type="password"
+              type={visiblePassword ? "text" : "password"}
               id="password"
               value={password}
               onChange={handlePassword}
               placeholder="Enter your password"
             />
+            <div className="toggle-password" onClick={togglePassword}>
+              {visiblePassword ? <FaEyeSlash /> : <FaEye />}
+            </div>
             {formError && formError.input === "password" && (
               <span>{formError.message}</span>
             )}

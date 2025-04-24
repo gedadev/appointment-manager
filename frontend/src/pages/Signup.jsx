@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../hooks/useAuth";
 import { MdError } from "react-icons/md";
+import { FaEye } from "react-icons/fa";
+import { FaEyeSlash } from "react-icons/fa";
+import { useAuth } from "../hooks/useAuth";
 import { useFormValidations } from "../hooks/useFormValidations";
 
 export default function Signup() {
@@ -11,6 +13,7 @@ export default function Signup() {
     password: "",
     businessName: "",
   });
+  const [visiblePassword, setVisiblePassword] = useState(false);
   const { signup, loading, error } = useAuth();
   const {
     validateName,
@@ -56,6 +59,10 @@ export default function Signup() {
       const { success } = await signup(formData);
       if (success) navigate("/dashboard");
     }
+  };
+
+  const togglePassword = () => {
+    setVisiblePassword(!visiblePassword);
   };
 
   return (
@@ -112,7 +119,7 @@ export default function Signup() {
           <div className="form-group">
             <label htmlFor="password">Password:</label>
             <input
-              type="password"
+              type={visiblePassword ? "text" : "password"}
               id="password"
               name="password"
               value={formData.password}
@@ -120,6 +127,9 @@ export default function Signup() {
               placeholder="Create a password"
               disabled={loading}
             />
+            <div className="toggle-password" onClick={togglePassword}>
+              {visiblePassword ? <FaEyeSlash /> : <FaEye />}
+            </div>
             {formError && formError.input === "password" && (
               <span>{formError.message}</span>
             )}
