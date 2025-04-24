@@ -1,0 +1,18 @@
+button {
+  padding: 0.8rem;
+  border: none;
+  border-radius: 0.3rem;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+
+button:hover {
+  background-color: var(--accent-alt);
+  box-shadow: 0 0 8px var(--accent-alt);
+}
+
+button:disabled {
+  background-color: #a0b8ff;
+  color: var(--dark);
+  cursor: not-allowed;
+}

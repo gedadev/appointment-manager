@@ -97,28 +97,10 @@
 .login-button,
 .signup-button {
   width: 100%;
-  padding: 12px;
   background-color: var(--accent);
   color: var(--light);
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 700;
-  cursor: pointer;
-  transition: all 0.3s ease-out;
-}
-
-.login-button:hover,
-.signup-button:hover {
-  background-color: var(--accent-alt);
-  box-shadow: 0 0 8px var(--accent-alt);
-}
-
-.login-button:disabled,
-.signup-button:disabled {
-  background-color: #a0b8ff;
-  color: var(--dark);
-  cursor: not-allowed;
 }
 
 .signup-link a,
