@@ -77,8 +77,29 @@ export const useFormValidations = () => {
   };
 
   const validateForm = (formData) => {
-    console.log(formData);
-    return false;
+    const formIsValid = Object.entries(formData).reduce(
+      (formIsValid, [name, value]) => {
+        const entryIsValid = () => {
+          switch (name) {
+            case "name":
+              return validateName(value);
+            case "businessName":
+              return validateBusinessName(value);
+            case "email":
+              return validateEmail(value);
+            case "password":
+              return validatePassword(value);
+            default:
+              break;
+          }
+        };
+
+        return formIsValid && entryIsValid();
+      },
+      true
+    );
+
+    return formIsValid;
   };
 
   return {
