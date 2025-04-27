@@ -5,6 +5,7 @@ import { useApi } from "../hooks/useApi";
 export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [userData, setUserData] = useState(null);
   const { endpoints, request } = useApi();
 
   const login = async (email, password) => {
@@ -20,6 +21,7 @@ export const AuthProvider = ({ children }) => {
       if (data instanceof Error) throw data;
 
       localStorage.setItem("authToken", data.token);
+      getUserData(data.token);
       return { success: true };
     } catch (err) {
       setError(err.message);
@@ -42,10 +44,31 @@ export const AuthProvider = ({ children }) => {
       if (data instanceof Error) throw data;
 
       localStorage.setItem("authToken", data.token);
+      getUserData(data.token);
       return { success: true };
     } catch (err) {
       setError(err.message);
       return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getUserData = async (token) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const data = await request(endpoints.user.profile, {
+        method: "GET",
+        authorization: `Bearer ${token}`,
+      });
+
+      if (data instanceof Error) throw data;
+
+      setUserData(data);
+    } catch (err) {
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -56,6 +79,8 @@ export const AuthProvider = ({ children }) => {
     error,
     login,
     signup,
+    userData,
+    userIsLogged: !!userData,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
