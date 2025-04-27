@@ -10,6 +10,7 @@ header {
   max-width: min(100%, 1200px);
   margin: auto;
   height: 4rem;
+  color: var(--light);
 }
 
 .login-button-nav {
@@ -24,4 +25,32 @@ header {
 
 .navbar-branding {
   color: var(--light);
+}
+
+.user-menu-nav {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+}
+
+.user-menu-nav:hover {
+  filter: drop-shadow(0 0 0.4rem var(--second));
+}
+
+.user-menu-nav:hover > svg {
+  animation: 1.8s infinite drop-arrow ease-in-out;
+}
+
+@keyframes drop-arrow {
+  0% {
+    transform: translateY(0);
+  }
+  80% {
+    transform: translateY(0.2rem);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }
