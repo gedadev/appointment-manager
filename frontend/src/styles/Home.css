@@ -11,6 +11,7 @@ header {
   margin: auto;
   height: 4rem;
   color: var(--light);
+  position: relative;
 }
 
 .login-button-nav {
@@ -52,5 +53,47 @@ header {
   }
   100% {
     transform: translateY(0);
+  }
+}
+
+.dropdown-menu {
+  position: absolute;
+  background-color: var(--accent-alt);
+  padding: 1rem 1.5rem;
+  border-radius: 0 0 0.4rem 0.4rem;
+  min-width: 12rem;
+  z-index: 2;
+  cursor: default;
+  right: 0;
+  top: -200%;
+  opacity: 0;
+  transition: all 0.3s ease-in-out;
+}
+
+.dropdown-menu ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.dropdown-menu li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease-in;
+}
+
+.dropdown-menu li:hover {
+  transform: scale(1.02);
+  filter: drop-shadow(0 0 0.1rem var(--second));
+}
+
+@media (max-width: 40rem) {
+  .navbar {
+    padding: 1rem;
+  }
+
+  .dropdown-menu {
+    width: 100%;
   }
 }
