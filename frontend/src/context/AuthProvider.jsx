@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { AuthContext } from "./AuthContext";
 import { useApi } from "../hooks/useApi";
 
@@ -7,6 +7,43 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [userData, setUserData] = useState(null);
   const { endpoints, request } = useApi();
+
+  const getUserData = useCallback(
+    async (token) => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const data = await request(endpoints.user.profile, {
+          method: "GET",
+          authorization: `Bearer ${token}`,
+        });
+
+        if (data instanceof Error) throw data;
+
+        setUserData(data);
+        return { success: true };
+      } catch (err) {
+        setError(err.message);
+        return { success: false };
+      } finally {
+        setLoading(false);
+      }
+    },
+    [endpoints, request]
+  );
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+
+    if (!token) {
+      setUserData(null);
+      return;
+    }
+
+    const { success } = getUserData(token);
+    if (!success) setUserData(null);
+  }, [getUserData]);
 
   const login = async (email, password) => {
     try {
@@ -49,26 +86,6 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       setError(err.message);
       return { success: false };
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const getUserData = async (token) => {
-    try {
-      setLoading(true);
-      setError(null);
-
-      const data = await request(endpoints.user.profile, {
-        method: "GET",
-        authorization: `Bearer ${token}`,
-      });
-
-      if (data instanceof Error) throw data;
-
-      setUserData(data);
-    } catch (err) {
-      setError(err.message);
     } finally {
       setLoading(false);
     }
