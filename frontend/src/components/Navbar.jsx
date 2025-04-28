@@ -37,6 +37,8 @@ export function Navbar() {
 }
 
 function UserMenu({ activeMenu }) {
+  const { logout } = useAuth();
+
   return (
     <nav
       className="dropdown-menu"
@@ -57,7 +59,7 @@ function UserMenu({ activeMenu }) {
             Profile <CgProfile />
           </li>
         </Link>
-        <Link to={""}>
+        <Link to={"/"} onClick={logout}>
           <li>
             Logout <CiLogout />
           </li>

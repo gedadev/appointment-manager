@@ -33,17 +33,22 @@ export const AuthProvider = ({ children }) => {
     [endpoints, request]
   );
 
+  const logout = useCallback(() => {
+    localStorage.removeItem("authToken");
+    setUserData(null);
+  }, []);
+
   useEffect(() => {
     const token = localStorage.getItem("authToken");
 
     if (!token) {
-      setUserData(null);
+      logout();
       return;
     }
 
     const { success } = getUserData(token);
     if (!success) setUserData(null);
-  }, [getUserData]);
+  }, [getUserData, logout]);
 
   const login = async (email, password) => {
     try {
@@ -96,6 +101,7 @@ export const AuthProvider = ({ children }) => {
     error,
     login,
     signup,
+    logout,
     userData,
     userIsLogged: !!userData,
   };
