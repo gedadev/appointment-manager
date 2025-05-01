@@ -3,8 +3,38 @@ const User = require("../models/User");
 const bcrypt = require("bcryptjs");
 const generateToken = require("../utils/generateToken");
 const authUser = require("../middleware/authUser");
+const jwt = require("jsonwebtoken");
 
 const router = express.Router();
+
+router.post("/refresh-token", async (req, res) => {
+  const { refreshToken } = req.body;
+
+  if (!refreshToken) return res.status(401).json({ message: "Unauthorized" });
+
+  try {
+    const data = jwt.verify(
+      refreshToken,
+      process.env.REFRESH_TOKEN,
+      (error, data) => {
+        if (error) throw new Error("Invalid token");
+        return data;
+      }
+    );
+
+    const user = await User.findById(data.userId).select("-passwordHash");
+
+    if (!user) throw new Error();
+
+    const { accessToken } = generateToken(user._id);
+
+    res.status(200).json({
+      token: accessToken,
+    });
+  } catch (error) {
+    res.status(403).json({ message: error.message || "Session expired" });
+  }
+});
 
 router.post("/create", async (req, res) => {
   const { name, email, password, businessName } = req.body;
