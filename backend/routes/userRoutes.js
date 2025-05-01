@@ -27,9 +27,11 @@ router.post("/create", async (req, res) => {
       businessSlug: businessName.toLowerCase().replace(/\s+/g, "-"),
     });
 
+    const { accessToken, refreshToken } = generateToken(user._id);
+
     res.status(201).json({
-      userId: user._id,
-      token: generateToken(user._id),
+      token: accessToken,
+      refreshToken: refreshToken,
     });
   } catch {
     res.status(500).json({ message: "User creation failed" });
@@ -50,9 +52,11 @@ router.post("/login", async (req, res) => {
 
     if (!isMatch) throw new Error("Invalid credentials");
 
+    const { accessToken, refreshToken } = generateToken(foundUser._id);
+
     res.status(200).json({
-      userId: foundUser._id,
-      token: generateToken(foundUser._id),
+      token: accessToken,
+      refreshToken: refreshToken,
     });
   } catch (error) {
     res.status(500).json({ message: error.message || "Login Failed" });
