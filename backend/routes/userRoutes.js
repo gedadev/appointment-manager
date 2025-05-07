@@ -45,6 +45,27 @@ router.post("/refresh-token", async (req, res) => {
   }
 });
 
+router.delete("/logout", async (req, res) => {
+  const { refreshToken } = req.body;
+
+  if (!refreshToken) return res.status(401).json({ message: "Unauthorized" });
+
+  const foundToken = await RefreshToken.findOne({
+    tokenHash: hashToken(refreshToken),
+  });
+
+  if (!foundToken) return res.status(403).json({ message: "Invalid token" });
+
+  try {
+    foundToken.revoked = true;
+    await foundToken.save();
+
+    res.status(200).json({ message: "Logged out successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message || "Logout failed" });
+  }
+});
+
 router.post("/create", async (req, res) => {
   const { name, email, password, businessName } = req.body;
   const foundUser = await User.findOne({ email });
