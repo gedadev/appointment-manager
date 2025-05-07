@@ -1,7 +1,9 @@
 const express = require("express");
 const User = require("../models/User");
+const RefreshToken = require("../models/RefreshToken");
 const bcrypt = require("bcryptjs");
 const generateToken = require("../utils/generateToken");
+const hashToken = require("../utils/hashToken");
 const authUser = require("../middleware/authUser");
 const jwt = require("jsonwebtoken");
 
@@ -11,6 +13,13 @@ router.post("/refresh-token", async (req, res) => {
   const { refreshToken } = req.body;
 
   if (!refreshToken) return res.status(401).json({ message: "Unauthorized" });
+
+  const foundToken = await RefreshToken.findOne({
+    tokenHash: hashToken(refreshToken),
+  });
+
+  if (!foundToken || foundToken.revoked)
+    return res.status(403).json({ message: "Invalid token" });
 
   try {
     const data = jwt.verify(
@@ -59,6 +68,11 @@ router.post("/create", async (req, res) => {
 
     const { accessToken, refreshToken } = generateToken(user._id);
 
+    await RefreshToken.create({
+      userId: foundUser._id,
+      tokenHash: hashToken(refreshToken),
+    });
+
     res.status(201).json({
       token: accessToken,
       refreshToken: refreshToken,
@@ -83,6 +97,11 @@ router.post("/login", async (req, res) => {
     if (!isMatch) throw new Error("Invalid credentials");
 
     const { accessToken, refreshToken } = generateToken(foundUser._id);
+
+    await RefreshToken.create({
+      userId: foundUser._id,
+      tokenHash: hashToken(refreshToken),
+    });
 
     res.status(200).json({
       token: accessToken,
