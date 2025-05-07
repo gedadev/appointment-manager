@@ -4,6 +4,7 @@ const RefreshToken = require("../models/RefreshToken");
 const bcrypt = require("bcryptjs");
 const generateToken = require("../utils/generateToken");
 const hashToken = require("../utils/hashToken");
+const revokeToken = require("../utils/revokeToken");
 const authUser = require("../middleware/authUser");
 const jwt = require("jsonwebtoken");
 
@@ -41,6 +42,7 @@ router.post("/refresh-token", async (req, res) => {
       token: accessToken,
     });
   } catch (error) {
+    await revokeToken(foundToken);
     res.status(403).json({ message: error.message || "Session expired" });
   }
 });
@@ -57,8 +59,7 @@ router.delete("/logout", async (req, res) => {
   if (!foundToken) return res.status(403).json({ message: "Invalid token" });
 
   try {
-    foundToken.revoked = true;
-    await foundToken.save();
+    await revokeToken(foundToken);
 
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
