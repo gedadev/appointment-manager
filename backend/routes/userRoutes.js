@@ -13,28 +13,28 @@ const router = express.Router();
 router.post("/refresh-token", async (req, res) => {
   const { refreshToken } = req.body;
 
-  if (!refreshToken) return res.status(401).json({ message: "Unauthorized" });
+  if (!refreshToken) return res.status(403).json({ message: "Forbidden" });
 
   const foundToken = await RefreshToken.findOne({
     tokenHash: hashToken(refreshToken),
   });
 
   if (!foundToken || foundToken.revoked)
-    return res.status(403).json({ message: "Invalid token" });
+    return res.status(403).json({ message: "Forbidden" });
 
   try {
     const data = jwt.verify(
       refreshToken,
       process.env.REFRESH_TOKEN,
       (error, data) => {
-        if (error) throw new Error("Invalid token");
+        if (error) throw new Error("Unauthorized");
         return data;
       }
     );
 
     const user = await User.findById(data.userId).select("-passwordHash");
 
-    if (!user) throw new Error();
+    if (!user) throw new Error("User not found");
 
     const { accessToken } = generateToken(user._id);
 
@@ -50,13 +50,13 @@ router.post("/refresh-token", async (req, res) => {
 router.delete("/logout", async (req, res) => {
   const { refreshToken } = req.body;
 
-  if (!refreshToken) return res.status(401).json({ message: "Unauthorized" });
+  if (!refreshToken) return res.status(403).json({ message: "Forbidden" });
 
   const foundToken = await RefreshToken.findOne({
     tokenHash: hashToken(refreshToken),
   });
 
-  if (!foundToken) return res.status(403).json({ message: "Invalid token" });
+  if (!foundToken) return res.status(403).json({ message: "Forbidden" });
 
   try {
     await revokeToken(foundToken);

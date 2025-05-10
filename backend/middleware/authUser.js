@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const authUser = async (req, res, next) => {
   const token = req.headers.authorization?.split(" ")[1];
 
-  if (!token) return res.status(401).json({ message: "Unauthorized" });
+  if (!token) return res.status(403).json({ message: "Forbidden" });
 
   try {
     const data = jwt.verify(token, process.env.ACCESS_TOKEN, (error, data) => {
@@ -14,12 +14,12 @@ const authUser = async (req, res, next) => {
 
     const user = await User.findById(data.userId).select("-passwordHash");
 
-    if (!user) throw new Error();
+    if (!user) throw new Error("User not found");
 
     req.user = user;
     next();
   } catch (error) {
-    res.status(403).json({ message: error.message || "Session expired" });
+    res.status(401).json({ message: error.message || "Session expired" });
   }
 };
 
