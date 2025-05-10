@@ -35,14 +35,17 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
-
     if (!token) {
       logout();
       return;
     }
 
-    const { success } = getUserData(token);
-    if (!success) setUserData(null);
+    const fetchUser = async () => {
+      const { success } = await getUserData(token);
+      if (!success) logout();
+    };
+
+    fetchUser();
   }, [getUserData, logout]);
 
   const login = async (email, password) => {
