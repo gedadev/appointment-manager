@@ -6,6 +6,8 @@ const API_CONFIG = {
     auth: {
       login: "/user/login",
       signup: "/user/create",
+      refresh: "/user/refresh-token",
+      logout: "/user/logout",
     },
     user: {
       profile: "/user/profile",
@@ -19,7 +21,6 @@ const API_CONFIG = {
 export const useApi = () => {
   const getApiUrl = useCallback((endpoint) => {
     let url = `${API_CONFIG.baseUrl}${endpoint}`;
-
     return url;
   }, []);
 
@@ -37,26 +38,87 @@ export const useApi = () => {
     return headers;
   }, []);
 
+  const refreshToken = useCallback(async () => {
+    const refreshToken = localStorage.getItem("refreshToken");
+    if (!refreshToken) {
+      throw new Error("No refresh token available");
+    }
+
+    const response = await fetch(getApiUrl(API_CONFIG.endpoints.auth.refresh), {
+      method: "POST",
+      headers: API_CONFIG.defaultHeaders,
+      body: JSON.stringify({ refreshToken }),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw error;
+    }
+
+    const data = await response.json();
+    localStorage.setItem("authToken", data.token);
+
+    return data.token;
+  }, [getApiUrl]);
+
   const request = useCallback(
     async (endpoint, options = {}) => {
       const { headers = {}, ...restOptions } = options;
-
       const url = getApiUrl(endpoint);
       const requestHeaders = getHeaders(headers);
 
-      const response = await fetch(url, {
-        ...restOptions,
-        headers: requestHeaders,
-      });
+      try {
+        const response = await fetch(url, {
+          ...restOptions,
+          headers: requestHeaders,
+        });
 
-      if (!response.ok) {
-        const error = await response.json();
-        return new Error(error.message || "API request failed");
+        // 401 status to refresh the token
+        if (response.status === 401) {
+          const newToken = await refreshToken();
+          if (newToken instanceof Error) throw newToken;
+
+          const retryResponse = await fetch(url, {
+            ...restOptions,
+            headers: {
+              ...requestHeaders,
+              Authorization: `Bearer ${newToken}`,
+            },
+          });
+
+          if (!retryResponse.ok) {
+            const error = await retryResponse.json();
+            throw new Error(error.message || "API request failed");
+          }
+
+          return await retryResponse.json();
+        }
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.message || "API request failed");
+        }
+
+        return await response.json();
+      } catch (error) {
+        // Forbidden message to delete the session
+        if (error.message === "Forbidden") {
+          const refreshToken = localStorage.getItem("refreshToken");
+          refreshToken &&
+            (await fetch(getApiUrl(API_CONFIG.endpoints.auth.logout), {
+              method: "DELETE",
+              headers: requestHeaders,
+              body: JSON.stringify({ refreshToken }),
+            }));
+
+          localStorage.removeItem("authToken");
+          localStorage.removeItem("refreshToken");
+          window.location.href = "/login";
+        }
+        throw error;
       }
-
-      return await response.json();
     },
-    [getApiUrl, getHeaders]
+    [getApiUrl, getHeaders, refreshToken]
   );
 
   return {
