@@ -28,10 +28,18 @@ export const AuthProvider = ({ children }) => {
     }
   }, [endpoints, request]);
 
-  const logout = useCallback(() => {
+  const logout = useCallback(async () => {
+    const refreshToken = localStorage.getItem("refreshToken");
+    refreshToken &&
+      (await request(endpoints.auth.logout, {
+        method: "DELETE",
+        body: JSON.stringify({ refreshToken }),
+      }));
+
     localStorage.removeItem("authToken");
+    localStorage.removeItem("refreshToken");
     setUserData(null);
-  }, []);
+  }, [endpoints, request]);
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -61,6 +69,7 @@ export const AuthProvider = ({ children }) => {
       if (data instanceof Error) throw data;
 
       localStorage.setItem("authToken", data.token);
+      localStorage.setItem("refreshToken", data.refreshToken);
       getUserData(data.token);
       return { success: true };
     } catch (err) {
@@ -84,6 +93,7 @@ export const AuthProvider = ({ children }) => {
       if (data instanceof Error) throw data;
 
       localStorage.setItem("authToken", data.token);
+      localStorage.setItem("refreshToken", data.refreshToken);
       getUserData(data.token);
       return { success: true };
     } catch (err) {
