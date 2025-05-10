@@ -8,30 +8,25 @@ export const AuthProvider = ({ children }) => {
   const [userData, setUserData] = useState(null);
   const { endpoints, request } = useApi();
 
-  const getUserData = useCallback(
-    async (token) => {
-      try {
-        setLoading(true);
-        setError(null);
+  const getUserData = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-        const data = await request(endpoints.user.profile, {
-          method: "GET",
-          authorization: `Bearer ${token}`,
-        });
+      const data = await request(endpoints.user.profile, {
+        method: "GET",
+      });
+      if (data instanceof Error) throw data;
 
-        if (data instanceof Error) throw data;
-
-        setUserData(data);
-        return { success: true };
-      } catch (err) {
-        setError(err.message);
-        return { success: false };
-      } finally {
-        setLoading(false);
-      }
-    },
-    [endpoints, request]
-  );
+      setUserData(data);
+      return { success: true };
+    } catch (err) {
+      setError(err.message);
+      return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  }, [endpoints, request]);
 
   const logout = useCallback(() => {
     localStorage.removeItem("authToken");
