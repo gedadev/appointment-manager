@@ -37,7 +37,7 @@ function GeneralInfo() {
     <main className="general-info-container">
       {userData && (
         <form onSubmit={handleSubmit}>
-          <div>
+          <div className="general-info-header">
             <h1>General Information</h1>
             <p>Update your business details and contact information</p>
           </div>
@@ -136,7 +136,14 @@ function GeneralInfo() {
               />
             </div>
           </div>
-          <button type="submit">Update</button>
+          <div className="profile-form-buttons">
+            <button type="button" className="cancel-button">
+              Cancel
+            </button>
+            <button type="submit" className="submit-button">
+              Save Changes
+            </button>
+          </div>
         </form>
       )}
     </main>

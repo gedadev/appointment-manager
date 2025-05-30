@@ -1,13 +1,29 @@
 .profile-section {
   margin: auto;
   max-width: min(100%, 800px);
+  position: relative;
+}
+
+.general-info-container {
+  border: 0.1rem solid var(--transparent);
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.general-info-header {
+  margin: 1rem;
+}
+
+.general-info-header p {
+  opacity: 0.6;
+  font-size: 0.9rem;
 }
 
 .logo-form-section {
   display: flex;
   gap: 1rem;
-  margin: 0.8rem;
-  padding: 1rem 0;
+  margin: 1rem;
+  padding-bottom: 2rem;
   border-bottom: 0.1rem solid var(--transparent);
 }
 
@@ -63,7 +79,7 @@
 }
 
 .profile-form-section {
-  margin: 0.8rem;
+  margin: 1rem;
   display: flex;
   flex-wrap: wrap;
 }
@@ -102,7 +118,6 @@
 .profile-form-group select:focus {
   outline: none;
   border-color: var(--accent);
-  -webkit-form-sizing: max-content;
 }
 
 .profile-form-group.description label {
@@ -112,6 +127,33 @@
 .profile-form-group textarea {
   height: 6rem;
   resize: none;
+}
+
+.profile-form-buttons {
+  position: absolute;
+  right: 0;
+  margin: 1rem 0;
+}
+
+.profile-form-buttons button {
+  padding: 0.6rem 0.8rem;
+  font-weight: 500;
+}
+
+.submit-button {
+  background-color: var(--accent);
+  color: var(--light);
+}
+
+.cancel-button {
+  background-color: unset;
+  margin: 0 1rem;
+  border: 0.1rem solid var(--gray);
+}
+
+.cancel-button:hover {
+  background-color: var(--gray);
+  box-shadow: none;
 }
 
 @media (max-width: 35rem) {
