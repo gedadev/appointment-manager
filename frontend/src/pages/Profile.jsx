@@ -7,6 +7,7 @@ import {
   FiGlobe,
   FiMail,
   FiPhone,
+  FiUpload,
   FiUsers,
 } from "react-icons/fi";
 
@@ -40,10 +41,32 @@ function GeneralInfo() {
             <h1>General Information</h1>
             <p>Update your business details and contact information</p>
           </div>
-          {/* <div>
-            <p>Business Logo : {userData.businessLogo}</p>
-          </div> */}
-          <div className="profile-form-container">
+          <div className="logo-form-section">
+            <div>
+              <img
+                src={
+                  userData.businessLogo
+                    ? userData.businessLogo
+                    : "https://placehold.co/200?text=Logo"
+                }
+                alt="Business Logo"
+              />
+            </div>
+            <div className="logo-input-section">
+              <p>Business Logo</p>
+              <label htmlFor="imageInput">
+                <FiUpload /> Upload Logo
+              </label>
+              <input
+                type="file"
+                id="imageInput"
+                name="image"
+                accept="image/*"
+              />
+              <span>Recommended: Square image, at least 200x200px</span>
+            </div>
+          </div>
+          <div className="profile-form-section">
             <div className="profile-form-group">
               <p>Business Name</p>
               <label htmlFor="businessName">
