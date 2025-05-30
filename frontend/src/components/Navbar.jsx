@@ -49,14 +49,14 @@ function UserMenu({ activeMenu }) {
       }}
     >
       <ul>
+        <Link to={"/profile"}>
+          <li>
+            Profile <CgProfile />
+          </li>
+        </Link>
         <Link to={"/dashboard"}>
           <li>
             Dashboard <MdDashboard />
-          </li>
-        </Link>
-        <Link to={""}>
-          <li>
-            Profile <CgProfile />
           </li>
         </Link>
         <Link to={"/"} onClick={logout}>
