@@ -42,3 +42,13 @@ export const getTimeZoneLabel = (tz) => {
 
   return `${tz.replace("_", " ")} (${offset})`;
 };
+
+export const workingHoursMock = {
+  monday: { start: null, end: null },
+  tuesday: { start: null, end: null },
+  wednesday: { start: null, end: null },
+  thursday: { start: null, end: null },
+  friday: { start: null, end: null },
+  saturday: { start: null, end: null },
+  sunday: { start: null, end: null },
+};

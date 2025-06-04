@@ -1,12 +1,19 @@
 import { FiClock } from "react-icons/fi";
 import { useAuth } from "../../hooks/useAuth";
+import { workingHoursMock } from "../../utils/main";
 
 export function WorkingHours() {
   const { userData } = useAuth();
+  const hoursIsSet =
+    userData && Object.prototype.hasOwnProperty.call(userData, "workingHours");
 
   const hoursOptions = [...Array(12)].map((_, i) => String(i + 1));
   const minutesOptions = ["00", "15", "30", "45"];
   const periodOptions = ["AM", "PM"];
+
+  const getHours = () => {
+    return hoursIsSet ? userData.workingHours : workingHoursMock;
+  };
 
   return (
     <main className="working-hours-container">
@@ -17,7 +24,7 @@ export function WorkingHours() {
             <p>Set your business operating hours</p>
           </div>
           <div>
-            {Object.entries(userData.workingHours).map(([day, hours]) => (
+            {Object.entries(getHours()).map(([day, hours]) => (
               <div key={day} className="day-group">
                 <div>
                   <input
