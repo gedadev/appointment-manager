@@ -47,17 +47,20 @@
 
 /* general info */
 
-.general-info-container {
+.general-info-container,
+.working-hours-container {
   border: 0.1rem solid var(--transparent);
   border-radius: 0.5rem;
   margin: 1rem 0;
 }
 
-.general-info-header {
+.general-info-header,
+.wh-header {
   margin: 1rem;
 }
 
-.general-info-header p {
+.general-info-header p,
+.wh-header p {
   opacity: 0.6;
   font-size: 0.9rem;
 }
@@ -215,4 +218,42 @@
   .logo-input-section span {
     font-size: 0.7rem;
   }
+}
+
+/* Working hours */
+
+.day-group {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  border: 0.1rem solid var(--transparent);
+  border-radius: 0.5rem;
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.day-group > div {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.day-group > div:first-child {
+  width: 8rem;
+}
+
+.day-group select {
+  padding: 0.3rem;
+  border: 0.1rem solid var(--transparent);
+  border-radius: 0.2rem;
+  font-size: 0.9rem;
+}
+
+.day-group span:first-of-type {
+  margin: 0 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  opacity: 0.6;
 }
