@@ -38,6 +38,18 @@ function HoursInputs({ day, hours }) {
   const minutesOptions = ["00", "15", "30", "45"];
   const periodOptions = ["AM", "PM"];
 
+  const formatHour = (hour24) => {
+    const hour = hour24 ? hour24.split(":")[0] : "1";
+    const minute = hour24 ? hour24.split(":")[1] : "0";
+    const period = Number(hour) < 12 ? "AM" : "PM";
+
+    return {
+      hour: hour > 12 ? Number(hour) - 12 : Number(hour),
+      minute: Number(minute),
+      period,
+    };
+  };
+
   return (
     <div className="day-group">
       <div>
@@ -46,7 +58,7 @@ function HoursInputs({ day, hours }) {
           name={`${day}-isOpen`}
           id={`${day}-isOpen`}
           checked={hours.start}
-          onClick={() => setActiveHours(!activeHours)}
+          onChange={() => setActiveHours(!activeHours)}
         />
         <label htmlFor={`${day}-isOpen`}>{day}</label>
       </div>
@@ -56,7 +68,11 @@ function HoursInputs({ day, hours }) {
             <span>
               <FiClock /> From
             </span>
-            <select name={`${day}-startHour`} id={`${day}-startHour`}>
+            <select
+              name={`${day}-startHour`}
+              id={`${day}-startHour`}
+              defaultValue={formatHour(hours.start).hour}
+            >
               {hoursOptions.map((hour) => (
                 <option key={hour} value={hour}>
                   {hour}
@@ -64,14 +80,22 @@ function HoursInputs({ day, hours }) {
               ))}
             </select>
             <span>:</span>
-            <select name={`${day}-startMinute`} id={`${day}-startMinute`}>
+            <select
+              name={`${day}-startMinute`}
+              id={`${day}-startMinute`}
+              defaultValue={formatHour(hours.start).minute}
+            >
               {minutesOptions.map((minute) => (
                 <option key={minute} value={minute}>
                   {minute}
                 </option>
               ))}
             </select>
-            <select name={`${day}-startPeriod`} id={`${day}-startPeriod`}>
+            <select
+              name={`${day}-startPeriod`}
+              id={`${day}-startPeriod`}
+              defaultValue={formatHour(hours.start).period}
+            >
               {periodOptions.map((period) => (
                 <option key={period} value={period}>
                   {period}
@@ -81,7 +105,11 @@ function HoursInputs({ day, hours }) {
           </div>
           <div>
             <span>To</span>
-            <select name={`${day}-endHour`} id={`${day}-endHour`}>
+            <select
+              name={`${day}-endHour`}
+              id={`${day}-endHour`}
+              defaultValue={formatHour(hours.end).hour}
+            >
               {hoursOptions.map((hour) => (
                 <option key={hour} value={hour}>
                   {hour}
@@ -89,14 +117,22 @@ function HoursInputs({ day, hours }) {
               ))}
             </select>
             <span>:</span>
-            <select name={`${day}-endMinute`} id={`${day}-endMinute`}>
+            <select
+              name={`${day}-endMinute`}
+              id={`${day}-endMinute`}
+              defaultValue={formatHour(hours.end).minute}
+            >
               {minutesOptions.map((minute) => (
                 <option key={minute} value={minute}>
                   {minute}
                 </option>
               ))}
             </select>
-            <select name={`${day}-endPeriod`} id={`${day}-endPeriod`}>
+            <select
+              name={`${day}-endPeriod`}
+              id={`${day}-endPeriod`}
+              defaultValue={formatHour(hours.end).period}
+            >
               {periodOptions.map((period) => (
                 <option key={period} value={period}>
                   {period}
