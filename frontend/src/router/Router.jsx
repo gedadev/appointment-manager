@@ -4,6 +4,7 @@ import Signup from "../pages/Signup";
 import { Home } from "../pages/Home";
 import { Profile } from "../pages/Profile";
 import { GeneralInfo } from "../components/Profile/GeneralInfo";
+import { WorkingHours } from "../components/Profile/WorkingHours";
 
 const Dashboard = () => <div>Dashboard Page</div>;
 
@@ -34,7 +35,7 @@ const router = createBrowserRouter([
       },
       {
         path: "hours",
-        element: <p>Working hours</p>,
+        element: <WorkingHours />,
       },
       {
         path: "advanced",
