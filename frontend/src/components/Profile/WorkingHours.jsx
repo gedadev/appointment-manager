@@ -12,10 +12,48 @@ export function WorkingHours() {
     return hoursIsSet ? userData.workingHours : workingHoursMock;
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const inputs = [...e.target.elements].filter(
+      (input) => input.tagName === "SELECT"
+    );
+
+    const reducedValues = inputs.reduce((values, input) => {
+      const day = input.name.split("-")[0];
+      const hours = Object.hasOwn(values, day)
+        ? [...values[day], input.value]
+        : [input.value];
+
+      return { ...values, [day]: hours };
+    }, {});
+
+    const formattedValues = Object.entries(reducedValues).map(
+      ([day, values]) => {
+        const startHour = values.slice(0, 3);
+        const endHour = values.slice(3, 6);
+
+        const formatTo24 = ([hour, minute, period]) => {
+          const hour24 = period === "AM" ? hour : Number(hour) + 12;
+
+          return `${hour24}:${minute}`;
+        };
+
+        const hours = {
+          start: formatTo24(startHour),
+          end: formatTo24(endHour),
+        };
+        return [day, hours];
+      }
+    );
+
+    const hoursObject = Object.fromEntries(formattedValues);
+  };
+
   return (
     <main className="working-hours-container">
       {userData && (
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="wh-header">
             <h1>Working Hours</h1>
             <p>Set your business operating hours</p>
@@ -24,6 +62,14 @@ export function WorkingHours() {
             {Object.entries(getHours()).map(([day, hours]) => (
               <HoursInputs key={day} day={day} hours={hours} />
             ))}
+          </div>
+          <div className="profile-form-buttons">
+            <button type="button" className="cancel-button">
+              Cancel
+            </button>
+            <button type="submit" className="submit-button">
+              Save Changes
+            </button>
           </div>
         </form>
       )}
