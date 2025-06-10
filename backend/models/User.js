@@ -18,6 +18,14 @@ const userSchema = new mongoose.Schema({
 
   businessName: { type: String, required: true },
   businessSlug: { type: String, required: true, unique: true },
+  logo: { type: String },
+  businessDescription: { type: String },
+  businessEmail: {
+    type: String,
+    default: function () {
+      return this.email;
+    },
+  },
   location: { type: String },
   timezone: { type: String, default: "America/Mexico_City" },
 
