@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { ProfileContext } from "./ProfileContext";
 import { useAuth } from "../hooks/useAuth";
 import { useApi } from "../hooks/useApi";
+import { workingHoursMock } from "../utils/main";
 
 export const ProfileProvider = ({ children }) => {
   const { userData, getUserData } = useAuth();
@@ -19,6 +20,50 @@ export const ProfileProvider = ({ children }) => {
       setHoursIsSet(Object.hasOwn(userData, "workingHours"));
     }
   }, [userData]);
+
+  const getHoursObject = (e) => {
+    const form = e.target.closest("form");
+
+    const inputs = [...form.elements].filter(
+      (input) => input.tagName === "SELECT"
+    );
+
+    const reducedValues = inputs.reduce((object, input) => {
+      const day = input.name.split("-")[0];
+      const hours = Object.hasOwn(object, day)
+        ? [...object[day], input.value]
+        : [input.value];
+
+      return { ...object, [day]: hours };
+    }, {});
+
+    const formattedValues = Object.entries(reducedValues).map(
+      ([day, values]) => {
+        const startHour = values.slice(0, 3);
+        const endHour = values.slice(3, 6);
+
+        const formatTo24 = ([hour, minute, period]) => {
+          const hour24 = period === "AM" ? hour : Number(hour) + 12;
+          return `${hour24}:${minute}`;
+        };
+
+        const hours = {
+          start: formatTo24(startHour),
+          end: formatTo24(endHour),
+        };
+        return [day, hours];
+      }
+    );
+
+    const hoursObject = Object.fromEntries(formattedValues);
+
+    return { ...workingHoursMock, ...hoursObject };
+  };
+
+  const handleHoursChange = (e) => {
+    const hoursObject = getHoursObject(e);
+    setHoursData(hoursObject);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,7 +95,9 @@ export const ProfileProvider = ({ children }) => {
     hoursData,
     hoursIsSet,
     handleChange,
+    handleHoursChange,
     updateUser,
+    getHoursObject,
     loading,
     error,
   };

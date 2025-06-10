@@ -5,7 +5,8 @@ import { useProfile } from "../../hooks/useProfile";
 import toast from "react-hot-toast";
 
 export function WorkingHours() {
-  const { hoursData, hoursIsSet, updateUser, error } = useProfile();
+  const { hoursData, hoursIsSet, getHoursObject, updateUser, error } =
+    useProfile();
 
   const getHours = () => {
     return hoursIsSet ? hoursData : workingHoursMock;
@@ -14,41 +15,10 @@ export function WorkingHours() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const inputs = [...e.target.elements].filter(
-      (input) => input.tagName === "SELECT"
-    );
-
-    const reducedValues = inputs.reduce((object, input) => {
-      const day = input.name.split("-")[0];
-      const hours = Object.hasOwn(object, day)
-        ? [...object[day], input.value]
-        : [input.value];
-
-      return { ...object, [day]: hours };
-    }, {});
-
-    const formattedValues = Object.entries(reducedValues).map(
-      ([day, values]) => {
-        const startHour = values.slice(0, 3);
-        const endHour = values.slice(3, 6);
-
-        const formatTo24 = ([hour, minute, period]) => {
-          const hour24 = period === "AM" ? hour : Number(hour) + 12;
-          return `${hour24}:${minute}`;
-        };
-
-        const hours = {
-          start: formatTo24(startHour),
-          end: formatTo24(endHour),
-        };
-        return [day, hours];
-      }
-    );
-
-    const hoursObject = Object.fromEntries(formattedValues);
+    const hoursObject = getHoursObject(e);
 
     const { success } = await updateUser({
-      workingHours: { ...workingHoursMock, ...hoursObject },
+      workingHours: hoursObject,
     });
 
     if (success) {
@@ -86,6 +56,7 @@ export function WorkingHours() {
 }
 
 function HoursInputs({ day, hours }) {
+  const { handleHoursChange } = useProfile();
   const [activeHours, setActiveHours] = useState(!!hours.start);
   const [checkedDay, setCheckedDay] = useState(!!hours.start);
 
@@ -134,6 +105,7 @@ function HoursInputs({ day, hours }) {
               name={`${day}-startHour`}
               id={`${day}-startHour`}
               defaultValue={formatHour(hours.start).hour}
+              onChange={handleHoursChange}
             >
               {hoursOptions.map((hour) => (
                 <option key={hour} value={hour}>
@@ -146,6 +118,7 @@ function HoursInputs({ day, hours }) {
               name={`${day}-startMinute`}
               id={`${day}-startMinute`}
               defaultValue={formatHour(hours.start).minute}
+              onChange={handleHoursChange}
             >
               {minutesOptions.map((minute) => (
                 <option key={minute} value={minute}>
@@ -157,6 +130,7 @@ function HoursInputs({ day, hours }) {
               name={`${day}-startPeriod`}
               id={`${day}-startPeriod`}
               defaultValue={formatHour(hours.start).period}
+              onChange={handleHoursChange}
             >
               {periodOptions.map((period) => (
                 <option key={period} value={period}>
@@ -171,6 +145,7 @@ function HoursInputs({ day, hours }) {
               name={`${day}-endHour`}
               id={`${day}-endHour`}
               defaultValue={formatHour(hours.end).hour}
+              onChange={handleHoursChange}
             >
               {hoursOptions.map((hour) => (
                 <option key={hour} value={hour}>
@@ -183,6 +158,7 @@ function HoursInputs({ day, hours }) {
               name={`${day}-endMinute`}
               id={`${day}-endMinute`}
               defaultValue={formatHour(hours.end).minute}
+              onChange={handleHoursChange}
             >
               {minutesOptions.map((minute) => (
                 <option key={minute} value={minute}>
@@ -194,6 +170,7 @@ function HoursInputs({ day, hours }) {
               name={`${day}-endPeriod`}
               id={`${day}-endPeriod`}
               defaultValue={formatHour(hours.end).period}
+              onChange={handleHoursChange}
             >
               {periodOptions.map((period) => (
                 <option key={period} value={period}>
