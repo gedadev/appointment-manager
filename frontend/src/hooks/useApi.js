@@ -4,10 +4,10 @@ const API_CONFIG = {
   baseUrl: "http://localhost:3000",
   endpoints: {
     auth: {
-      login: "/user/login",
-      signup: "/user/create",
-      refresh: "/user/refresh-token",
-      logout: "/user/logout",
+      login: "/auth/login",
+      signup: "/auth/create",
+      refresh: "/auth/refresh-token",
+      logout: "/auth/logout",
     },
     user: {
       profile: "/user/profile",
