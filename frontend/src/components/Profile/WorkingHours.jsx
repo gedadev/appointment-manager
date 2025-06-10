@@ -2,30 +2,32 @@ import { FiClock } from "react-icons/fi";
 import { useAuth } from "../../hooks/useAuth";
 import { workingHoursMock } from "../../utils/main";
 import { useState } from "react";
+import { useProfile } from "../../hooks/useProfile";
+import toast from "react-hot-toast";
 
 export function WorkingHours() {
   const { userData } = useAuth();
-  const hoursIsSet =
-    userData && Object.prototype.hasOwnProperty.call(userData, "workingHours");
+  const { updateUser, error } = useProfile();
+  const hoursIsSet = userData && Object.hasOwn(userData, "workingHours");
 
   const getHours = () => {
     return hoursIsSet ? userData.workingHours : workingHoursMock;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     const inputs = [...e.target.elements].filter(
       (input) => input.tagName === "SELECT"
     );
 
-    const reducedValues = inputs.reduce((values, input) => {
+    const reducedValues = inputs.reduce((object, input) => {
       const day = input.name.split("-")[0];
-      const hours = Object.hasOwn(values, day)
-        ? [...values[day], input.value]
+      const hours = Object.hasOwn(object, day)
+        ? [...object[day], input.value]
         : [input.value];
 
-      return { ...values, [day]: hours };
+      return { ...object, [day]: hours };
     }, {});
 
     const formattedValues = Object.entries(reducedValues).map(
@@ -35,7 +37,6 @@ export function WorkingHours() {
 
         const formatTo24 = ([hour, minute, period]) => {
           const hour24 = period === "AM" ? hour : Number(hour) + 12;
-
           return `${hour24}:${minute}`;
         };
 
@@ -48,6 +49,16 @@ export function WorkingHours() {
     );
 
     const hoursObject = Object.fromEntries(formattedValues);
+
+    const { success } = await updateUser({
+      workingHours: { ...workingHoursMock, ...hoursObject },
+    });
+
+    if (success) {
+      toast.success("Profile updated successfully");
+    } else {
+      toast.error(error);
+    }
   };
 
   return (
