@@ -2,6 +2,7 @@ import "../styles/Profile.css";
 import { Navbar } from "../components/Navbar";
 import { Outlet } from "react-router-dom";
 import { ProfileHeader } from "../components/Profile/ProfileHeader";
+import { ProfileProvider } from "../context/ProfileProvider";
 
 export function Profile() {
   return (
@@ -10,8 +11,10 @@ export function Profile() {
         <Navbar />
       </header>
       <section className="profile-section">
-        <ProfileHeader />
-        <Outlet />
+        <ProfileProvider>
+          <ProfileHeader />
+          <Outlet />
+        </ProfileProvider>
       </section>
     </main>
   );
