@@ -1,17 +1,14 @@
 import { FiClock } from "react-icons/fi";
-import { useAuth } from "../../hooks/useAuth";
 import { workingHoursMock } from "../../utils/main";
 import { useState } from "react";
 import { useProfile } from "../../hooks/useProfile";
 import toast from "react-hot-toast";
 
 export function WorkingHours() {
-  const { userData } = useAuth();
-  const { updateUser, error } = useProfile();
-  const hoursIsSet = userData && Object.hasOwn(userData, "workingHours");
+  const { hoursData, hoursIsSet, updateUser, error } = useProfile();
 
   const getHours = () => {
-    return hoursIsSet ? userData.workingHours : workingHoursMock;
+    return hoursIsSet ? hoursData : workingHoursMock;
   };
 
   const handleSubmit = async (e) => {
@@ -63,7 +60,7 @@ export function WorkingHours() {
 
   return (
     <main className="working-hours-container">
-      {userData && (
+      {hoursData && (
         <form onSubmit={handleSubmit}>
           <div className="wh-header">
             <h1>Working Hours</h1>

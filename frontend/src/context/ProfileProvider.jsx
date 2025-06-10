@@ -6,12 +6,18 @@ import { useApi } from "../hooks/useApi";
 export const ProfileProvider = ({ children }) => {
   const { userData, getUserData } = useAuth();
   const { endpoints, request } = useApi();
-  const [generalData, setGeneralData] = useState();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [generalData, setGeneralData] = useState();
+  const [hoursData, setHoursData] = useState();
+  const [hoursIsSet, setHoursIsSet] = useState(false);
 
   useEffect(() => {
-    if (userData) setGeneralData(userData);
+    if (userData) {
+      setGeneralData(userData);
+      setHoursData(userData.workingHours);
+      setHoursIsSet(Object.hasOwn(userData, "workingHours"));
+    }
   }, [userData]);
 
   const handleChange = (e) => {
@@ -41,6 +47,8 @@ export const ProfileProvider = ({ children }) => {
 
   const value = {
     generalData,
+    hoursData,
+    hoursIsSet,
     handleChange,
     updateUser,
     loading,
