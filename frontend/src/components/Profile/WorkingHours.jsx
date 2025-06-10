@@ -87,6 +87,7 @@ export function WorkingHours() {
 
 function HoursInputs({ day, hours }) {
   const [activeHours, setActiveHours] = useState(!!hours.start);
+  const [checkedDay, setCheckedDay] = useState(!!hours.start);
 
   const hoursOptions = [...Array(12)].map((_, i) => String(i + 1));
   const minutesOptions = ["00", "15", "30", "45"];
@@ -104,6 +105,13 @@ function HoursInputs({ day, hours }) {
     };
   };
 
+  const formatDay = (day) => `${day.charAt(0).toUpperCase()}${day.slice(1)}`;
+
+  const handleChange = () => {
+    setActiveHours(!activeHours);
+    setCheckedDay(!checkedDay);
+  };
+
   return (
     <div className="day-group">
       <div>
@@ -111,10 +119,10 @@ function HoursInputs({ day, hours }) {
           type="checkbox"
           name={`${day}-isOpen`}
           id={`${day}-isOpen`}
-          checked={hours.start}
-          onChange={() => setActiveHours(!activeHours)}
+          checked={checkedDay}
+          onChange={handleChange}
         />
-        <label htmlFor={`${day}-isOpen`}>{day}</label>
+        <label htmlFor={`${day}-isOpen`}>{formatDay(day)}</label>
       </div>
       {activeHours ? (
         <>
