@@ -49,7 +49,7 @@ export const AuthProvider = ({ children }) => {
     }
 
     const fetchUser = async () => {
-      const { success } = await getUserData(token);
+      const { success } = await getUserData();
       if (!success) logout();
     };
 
@@ -70,7 +70,7 @@ export const AuthProvider = ({ children }) => {
 
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("refreshToken", data.refreshToken);
-      getUserData(data.token);
+      getUserData();
       return { success: true };
     } catch (err) {
       setError(err.message);
@@ -94,7 +94,7 @@ export const AuthProvider = ({ children }) => {
 
       localStorage.setItem("authToken", data.token);
       localStorage.setItem("refreshToken", data.refreshToken);
-      getUserData(data.token);
+      getUserData();
       return { success: true };
     } catch (err) {
       setError(err.message);
@@ -112,6 +112,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     userData,
     userIsLogged: !!userData,
+    getUserData,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
