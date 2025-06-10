@@ -1,3 +1,4 @@
+import toast from "react-hot-toast";
 import { useProfile } from "../../hooks/useProfile";
 import { getTimeZoneLabel, TimeZones } from "../../utils/main";
 import {
@@ -10,9 +11,9 @@ import {
 } from "react-icons/fi";
 
 export function GeneralInfo() {
-  const { generalData, handleChange } = useProfile();
+  const { generalData, handleChange, updateUser, error } = useProfile();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const data = [...e.target.elements];
 
@@ -24,12 +25,17 @@ export function GeneralInfo() {
       return { ...object, [key]: value };
     }, {});
 
-    console.log(dataObject);
+    const { success } = await updateUser(dataObject);
+
+    if (success) {
+      toast.success("Profile updated successfully");
+    } else {
+      toast.error(error);
+    }
   };
 
   return (
     <main className="general-info-container">
-      {console.log(generalData)}
       {generalData && (
         <form onSubmit={handleSubmit}>
           <div className="general-info-header">
