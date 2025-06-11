@@ -1,9 +1,10 @@
 import { useProfile } from "../../hooks/useProfile";
-import { getTimeZoneLabel, TimeZones } from "../../utils/main";
+import { countries, getTimeZoneLabel, TimeZones } from "../../utils/main";
 import {
   FiAlertCircle,
   FiGlobe,
   FiMail,
+  FiMapPin,
   FiPhone,
   FiUpload,
   FiUsers,
@@ -54,7 +55,7 @@ export function GeneralInfo() {
                 onChange={handleChange}
               />
             </div>
-            <div className="profile-form-group email">
+            <div className="profile-form-group short">
               <p>Business Email</p>
               <label htmlFor="businessEmail">
                 <FiMail />
@@ -67,7 +68,7 @@ export function GeneralInfo() {
                 onChange={handleChange}
               />
             </div>
-            <div className="profile-form-group phone">
+            <div className="profile-form-group short">
               <p>Phone Number</p>
               <label htmlFor="phone">
                 <FiPhone />
@@ -80,7 +81,24 @@ export function GeneralInfo() {
                 onChange={handleChange}
               />
             </div>
-            <div className="profile-form-group">
+            <div className="profile-form-group short">
+              <p>Location</p>
+              <label htmlFor="location">
+                <FiMapPin />
+              </label>
+              <select
+                defaultValue={generalData.location}
+                name="location"
+                onChange={handleChange}
+              >
+                {countries.map((country) => (
+                  <option key={country.code} value={country.code}>
+                    {`${country.emoji} ${country.name}`}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="profile-form-group short">
               <p>Time Zone</p>
               <label htmlFor="timezone">
                 <FiGlobe />

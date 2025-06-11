@@ -145,8 +145,7 @@
   font-weight: 600;
 }
 
-.profile-form-group.email,
-.profile-form-group.phone {
+.profile-form-group.short {
   min-width: 50%;
 }
 
