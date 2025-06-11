@@ -3,6 +3,7 @@ import { ProfileContext } from "./ProfileContext";
 import { useAuth } from "../hooks/useAuth";
 import { useApi } from "../hooks/useApi";
 import { workingHoursMock } from "../utils/main";
+// import toast from "react-hot-toast";
 
 export const ProfileProvider = ({ children }) => {
   const { userData, getUserData } = useAuth();
@@ -60,6 +61,9 @@ export const ProfileProvider = ({ children }) => {
     return { ...workingHoursMock, ...hoursObject };
   };
 
+  const resetDay = (day) =>
+    setHoursData({ ...hoursData, [day]: { start: null, end: null } });
+
   const handleHoursChange = (e) => {
     const hoursObject = getHoursObject(e);
     setHoursData(hoursObject);
@@ -96,6 +100,7 @@ export const ProfileProvider = ({ children }) => {
     hoursIsSet,
     handleChange,
     handleHoursChange,
+    resetDay,
     updateUser,
     getHoursObject,
     loading,

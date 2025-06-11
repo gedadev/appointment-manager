@@ -56,7 +56,7 @@ export function WorkingHours() {
 }
 
 function HoursInputs({ day, hours }) {
-  const { handleHoursChange } = useProfile();
+  const { handleHoursChange, resetDay } = useProfile();
   const [activeHours, setActiveHours] = useState(!!hours.start);
   const [checkedDay, setCheckedDay] = useState(!!hours.start);
 
@@ -78,9 +78,14 @@ function HoursInputs({ day, hours }) {
 
   const formatDay = (day) => `${day.charAt(0).toUpperCase()}${day.slice(1)}`;
 
-  const handleChange = () => {
+  const handleChange = (e) => {
     setActiveHours(!activeHours);
     setCheckedDay(!checkedDay);
+
+    const element = e.target;
+    if (!element.checked) {
+      resetDay(element.name);
+    }
   };
 
   return (
@@ -88,12 +93,12 @@ function HoursInputs({ day, hours }) {
       <div>
         <input
           type="checkbox"
-          name={`${day}-isOpen`}
-          id={`${day}-isOpen`}
+          name={`${day}`}
+          id={`${day}`}
           checked={checkedDay}
           onChange={handleChange}
         />
-        <label htmlFor={`${day}-isOpen`}>{formatDay(day)}</label>
+        <label htmlFor={`${day}`}>{formatDay(day)}</label>
       </div>
       {activeHours ? (
         <>
