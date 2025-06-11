@@ -85,7 +85,11 @@ export function GeneralInfo() {
               <label htmlFor="timezone">
                 <FiGlobe />
               </label>
-              <select defaultValue={generalData.timezone} name="timezone">
+              <select
+                defaultValue={generalData.timezone}
+                name="timezone"
+                onChange={handleChange}
+              >
                 {TimeZones.map((tz) => (
                   <option key={tz} value={tz}>
                     {getTimeZoneLabel(tz)}
