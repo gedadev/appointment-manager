@@ -13,6 +13,14 @@ export const ProfileProvider = ({ children }) => {
   const [generalData, setGeneralData] = useState();
   const [hoursData, setHoursData] = useState();
   const [hoursIsSet, setHoursIsSet] = useState(false);
+  const [formChanged, setFormChanged] = useState(false);
+
+  useEffect(() => {
+    const formData = { ...generalData, workingHours: { ...hoursData } };
+    const isFormChanged = JSON.stringify(formData) !== JSON.stringify(userData);
+
+    setFormChanged(isFormChanged);
+  }, [generalData, hoursData, userData]);
 
   useEffect(() => {
     if (userData) {
@@ -117,6 +125,7 @@ export const ProfileProvider = ({ children }) => {
     resetDay,
     updateUser,
     getHoursObject,
+    formChanged,
     loading,
     error,
   };
