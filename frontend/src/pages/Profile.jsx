@@ -1,8 +1,8 @@
 import "../styles/Profile.css";
 import { Navbar } from "../components/Navbar";
-import { Outlet } from "react-router-dom";
-import { ProfileHeader } from "../components/Profile/ProfileHeader";
 import { ProfileProvider } from "../context/ProfileProvider";
+import { ProfileHeader } from "../components/Profile/ProfileHeader";
+import { ProfileForm } from "../components/Profile/ProfileForm";
 
 export function Profile() {
   return (
@@ -13,7 +13,7 @@ export function Profile() {
       <section className="profile-section">
         <ProfileProvider>
           <ProfileHeader />
-          <Outlet />
+          <ProfileForm />
         </ProfileProvider>
       </section>
     </main>
