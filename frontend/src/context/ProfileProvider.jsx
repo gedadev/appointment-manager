@@ -3,7 +3,7 @@ import { ProfileContext } from "./ProfileContext";
 import { useAuth } from "../hooks/useAuth";
 import { useApi } from "../hooks/useApi";
 import { workingHoursMock } from "../utils/main";
-// import toast from "react-hot-toast";
+import toast from "react-hot-toast";
 
 export const ProfileProvider = ({ children }) => {
   const { userData, getUserData } = useAuth();
@@ -94,10 +94,24 @@ export const ProfileProvider = ({ children }) => {
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = { ...generalData, workingHours: { ...hoursData } };
+
+    const { success } = await updateUser(data);
+
+    if (success) {
+      toast.success("Profile updated successfully");
+    } else {
+      toast.error(error);
+    }
+  };
+
   const value = {
     generalData,
     hoursData,
     hoursIsSet,
+    handleSubmit,
     handleChange,
     handleHoursChange,
     resetDay,

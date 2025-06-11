@@ -2,36 +2,18 @@ import { FiClock } from "react-icons/fi";
 import { workingHoursMock } from "../../utils/main";
 import { useState } from "react";
 import { useProfile } from "../../hooks/useProfile";
-import toast from "react-hot-toast";
 
 export function WorkingHours() {
-  const { hoursData, hoursIsSet, getHoursObject, updateUser, error } =
-    useProfile();
+  const { hoursData, hoursIsSet } = useProfile();
 
   const getHours = () => {
     return hoursIsSet ? hoursData : workingHoursMock;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const hoursObject = getHoursObject(e);
-
-    const { success } = await updateUser({
-      workingHours: hoursObject,
-    });
-
-    if (success) {
-      toast.success("Profile updated successfully");
-    } else {
-      toast.error(error);
-    }
-  };
-
   return (
     <main className="working-hours-container">
       {hoursData && (
-        <form onSubmit={handleSubmit}>
+        <>
           <div className="wh-header">
             <h1>Working Hours</h1>
             <p>Set your business operating hours</p>
@@ -41,15 +23,7 @@ export function WorkingHours() {
               <HoursInputs key={day} day={day} hours={hours} />
             ))}
           </div>
-          <div className="profile-form-buttons">
-            <button type="button" className="cancel-button">
-              Cancel
-            </button>
-            <button type="submit" className="submit-button">
-              Save Changes
-            </button>
-          </div>
-        </form>
+        </>
       )}
     </main>
   );
