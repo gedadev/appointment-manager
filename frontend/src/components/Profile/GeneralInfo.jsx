@@ -13,6 +13,12 @@ import {
 export function GeneralInfo() {
   const { generalData, handleChange } = useProfile();
 
+  const getPhoneCode = (location) => {
+    const [country] = countries.filter((country) => country.code === location);
+
+    return `${country.emoji} (${country.phoneCode})`;
+  };
+
   return (
     <main className="general-info-container">
       {generalData && (
@@ -73,13 +79,16 @@ export function GeneralInfo() {
               <label htmlFor="phone">
                 <FiPhone />
               </label>
-              <input
-                type="text"
-                id="phone"
-                name="phone"
-                value={generalData.phone}
-                onChange={handleChange}
-              />
+              <div className="phone-input">
+                <input
+                  type="text"
+                  id="phone"
+                  name="phone"
+                  value={generalData.phone}
+                  onChange={handleChange}
+                />
+                <span>{getPhoneCode(generalData.location)}</span>
+              </div>
             </div>
             <div className="profile-form-group short">
               <p>Location</p>
