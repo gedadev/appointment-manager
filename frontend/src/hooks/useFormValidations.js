@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { isValidPhoneNumber } from "libphonenumber-js/max";
 
 export const useFormValidations = () => {
   const [formError, setFormError] = useState(null);
@@ -34,6 +35,19 @@ export const useFormValidations = () => {
       return false;
     } else if (!emailRegex.test(email)) {
       setFormError({ message: "Enter a valid email", input: "email" });
+      return false;
+    } else {
+      setFormError(null);
+      return true;
+    }
+  };
+
+  const validatePhone = (phone, location) => {
+    if (!phone) {
+      setFormError(null);
+      return true;
+    } else if (!isValidPhoneNumber(phone, location)) {
+      setFormError({ message: "Enter a valid number", input: "phone" });
       return false;
     } else {
       setFormError(null);
