@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { ProfileContext } from "./ProfileContext";
 import { useAuth } from "../hooks/useAuth";
 import { useApi } from "../hooks/useApi";
+import { useFormValidations } from "../hooks/useFormValidations";
 import { workingHoursMock } from "../utils/main";
 import toast from "react-hot-toast";
 
 export const ProfileProvider = ({ children }) => {
   const { userData, getUserData } = useAuth();
   const { endpoints, request } = useApi();
+  const { validateBusinessName, validateEmail, validatePhone, formError } =
+    useFormValidations();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [generalData, setGeneralData] = useState();
@@ -79,6 +82,21 @@ export const ProfileProvider = ({ children }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    const location = userData && userData.location;
+
+    switch (name) {
+      case "businessEmail":
+        validateEmail(value);
+        break;
+      case "phone":
+        validatePhone(value, location);
+        break;
+      case "businessName":
+        validateBusinessName(value);
+        break;
+      default:
+        break;
+    }
     setGeneralData({ ...generalData, [name]: value });
   };
 
@@ -105,7 +123,6 @@ export const ProfileProvider = ({ children }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = { ...generalData, workingHours: { ...hoursData } };
-
     const { success } = await updateUser(data);
 
     if (success) {
@@ -128,6 +145,7 @@ export const ProfileProvider = ({ children }) => {
     formChanged,
     loading,
     error,
+    formError: formError,
   };
 
   return (

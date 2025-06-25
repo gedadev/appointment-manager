@@ -11,7 +11,7 @@ import {
 } from "react-icons/fi";
 
 export function GeneralInfo() {
-  const { generalData, handleChange } = useProfile();
+  const { generalData, handleChange, formError } = useProfile();
 
   const getPhoneCode = (location) => {
     const [country] = countries.filter((country) => country.code === location);
@@ -60,6 +60,9 @@ export function GeneralInfo() {
                 value={generalData.businessName}
                 onChange={handleChange}
               />
+              {formError && formError.input === "businessName" && (
+                <span>{formError.message}</span>
+              )}
             </div>
             <div className="profile-form-group short">
               <p>Business Email</p>
@@ -73,6 +76,9 @@ export function GeneralInfo() {
                 value={generalData.businessEmail}
                 onChange={handleChange}
               />
+              {formError && formError.input === "email" && (
+                <span>{formError.message}</span>
+              )}
             </div>
             <div className="profile-form-group short">
               <p>Phone Number</p>
@@ -89,6 +95,9 @@ export function GeneralInfo() {
                 />
                 <span>{getPhoneCode(generalData.location)}</span>
               </div>
+              {formError && formError.input === "phone" && (
+                <span>{formError.message}</span>
+              )}
             </div>
             <div className="profile-form-group short">
               <p>Location</p>

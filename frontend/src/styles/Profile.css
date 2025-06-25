@@ -138,6 +138,7 @@
   grid-template-columns: 1.5rem 1fr;
   grid-template-rows: 2.5rem 1fr;
   align-items: center;
+  position: relative;
 }
 
 .phone-input {
@@ -157,6 +158,20 @@
   display: flex;
   font-size: 0.75rem;
   margin: 0 0.6rem;
+}
+
+.profile-form-group > span {
+  position: absolute;
+  right: 0;
+  bottom: -1.55rem;
+  margin: 0 0.5rem;
+  background-color: var(--accent-alt);
+  color: var(--gray);
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.3rem 0.4rem var(--transparent);
+  z-index: 1;
 }
 
 .profile-form-group p {
