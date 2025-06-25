@@ -9,8 +9,13 @@ import toast from "react-hot-toast";
 export const ProfileProvider = ({ children }) => {
   const { userData, getUserData } = useAuth();
   const { endpoints, request } = useApi();
-  const { validateBusinessName, validateEmail, validatePhone, formError } =
-    useFormValidations();
+  const {
+    validateBusinessName,
+    validateEmail,
+    validatePhone,
+    formError,
+    validateGeneralInfo,
+  } = useFormValidations();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [generalData, setGeneralData] = useState();
@@ -122,6 +127,13 @@ export const ProfileProvider = ({ children }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const location = userData && userData.location;
+    const formIsValid = validateGeneralInfo(generalData, location);
+    if (!formIsValid) {
+      toast.error("Invalid data");
+      return;
+    }
+
     const data = { ...generalData, workingHours: { ...hoursData } };
     const { success } = await updateUser(data);
 

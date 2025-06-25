@@ -116,12 +116,38 @@ export const useFormValidations = () => {
     return formIsValid;
   };
 
+  const validateGeneralInfo = (data, location) => {
+    for (const [name, value] of Object.entries(data)) {
+      const validateEntry = () => {
+        switch (name) {
+          case "businessName":
+            return validateBusinessName(value);
+          case "businessEmail":
+            return validateEmail(value);
+          case "phone":
+            return validatePhone(value, location);
+          default:
+            return null;
+        }
+      };
+
+      const entryIsValid = validateEntry();
+
+      if (entryIsValid === null) continue;
+      if (!entryIsValid) return false;
+    }
+
+    return true;
+  };
+
   return {
     validateForm,
+    validateGeneralInfo,
     validateEmail,
     validatePassword,
     validateName,
     validateBusinessName,
+    validatePhone,
     formError,
   };
 };
