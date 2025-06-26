@@ -158,7 +158,11 @@ export const ProfileProvider = ({ children }) => {
     e.preventDefault();
     const location = userData && userData.location;
     const formIsValid = validateGeneralInfo(generalData, location);
-    if (!formIsValid) {
+    const hoursAreValid = Object.values(validHours).reduce(
+      (isValid, hour) => isValid && hour,
+      true
+    );
+    if (!formIsValid || !hoursAreValid) {
       toast.error("Invalid data");
       return;
     }
