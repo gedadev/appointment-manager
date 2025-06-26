@@ -22,6 +22,15 @@ export const ProfileProvider = ({ children }) => {
   const [hoursData, setHoursData] = useState();
   const [hoursIsSet, setHoursIsSet] = useState(false);
   const [formChanged, setFormChanged] = useState(false);
+  const [validHours, setValidHours] = useState({
+    monday: false,
+    tuesday: false,
+    wednesday: false,
+    thursday: false,
+    friday: false,
+    saturday: false,
+    sunday: false,
+  });
 
   useEffect(() => {
     const formData = { ...generalData, workingHours: { ...hoursData } };
@@ -37,6 +46,26 @@ export const ProfileProvider = ({ children }) => {
       setHoursIsSet(Object.hasOwn(userData, "workingHours"));
     }
   }, [userData]);
+
+  useEffect(() => {
+    const validateHours = () => {
+      const hoursAreValid = Object.entries(hoursData).map(([day, hours]) => {
+        const { start, end } = hours;
+        const timeToMinutes = (timeStr) => {
+          const [hours, minutes] = timeStr.split(":").map(Number);
+          return hours * 60 + minutes;
+        };
+
+        if (!start) return [day, true];
+        if (timeToMinutes(start) >= timeToMinutes(end)) return [day, false];
+        return [day, true];
+      });
+
+      setValidHours(Object.fromEntries(hoursAreValid));
+    };
+
+    hoursData && validateHours();
+  }, [hoursData]);
 
   const getHoursObject = (e) => {
     const form = e.target.closest("form");
@@ -148,6 +177,7 @@ export const ProfileProvider = ({ children }) => {
     generalData,
     hoursData,
     hoursIsSet,
+    validHours,
     handleSubmit,
     handleChange,
     handleHoursChange,

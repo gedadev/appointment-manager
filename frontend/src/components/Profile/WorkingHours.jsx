@@ -30,7 +30,7 @@ export function WorkingHours() {
 }
 
 function HoursInputs({ day, hours }) {
-  const { handleHoursChange, resetDay } = useProfile();
+  const { handleHoursChange, resetDay, validHours } = useProfile();
   const [activeHours, setActiveHours] = useState(!!hours.start);
   const [checkedDay, setCheckedDay] = useState(!!hours.start);
 
@@ -63,7 +63,12 @@ function HoursInputs({ day, hours }) {
   };
 
   return (
-    <div className="day-group">
+    <div
+      className="day-group"
+      style={{
+        borderColor: validHours[day] ? "var(--transparent)" : "var(--error)",
+      }}
+    >
       <div>
         <input
           type="checkbox"
