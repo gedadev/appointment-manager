@@ -5,6 +5,7 @@ import { Home } from "../pages/Home";
 import { Profile } from "../pages/Profile";
 import { GeneralInfo } from "../components/Profile/GeneralInfo";
 import { WorkingHours } from "../components/Profile/WorkingHours";
+import { AdvancedInfo } from "../components/Profile/AdvancedInfo";
 
 const Dashboard = () => <div>Dashboard Page</div>;
 
@@ -39,7 +40,7 @@ const router = createBrowserRouter([
       },
       {
         path: "advanced",
-        element: <p>Advanced</p>,
+        element: <AdvancedInfo />,
       },
     ],
   },

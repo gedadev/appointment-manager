@@ -48,6 +48,7 @@
 /* general info */
 
 .general-info-container,
+.advanced-info-container,
 .working-hours-container {
   border: 0.1rem solid var(--transparent);
   border-radius: 0.5rem;
@@ -55,11 +56,13 @@
 }
 
 .general-info-header,
+.advanced-info-header,
 .wh-header {
   margin: 1rem;
 }
 
 .general-info-header p,
+.advanced-info-header p,
 .wh-header p {
   opacity: 0.6;
   font-size: 0.9rem;
@@ -289,4 +292,38 @@
   align-items: center;
   gap: 1rem;
   opacity: 0.6;
+}
+
+/* Advanced Info */
+
+.advanced-data-card {
+  margin: 1rem;
+  padding: 0.5rem 1rem;
+  border: 0.1rem solid var(--transparent);
+  border-radius: 0.2rem;
+}
+
+.advanced-data-card > div {
+  margin: 0.5rem 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  font-size: 0.9rem;
+}
+
+.advanced-data-card > div span:first-child {
+  opacity: 0.6;
+}
+
+.advanced-info-container > span {
+  font-size: 0.8rem;
+  opacity: 0.6;
+  margin: 1rem;
+  display: block;
+}
+
+.advanced-info-container > span:first-of-type {
+  opacity: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
