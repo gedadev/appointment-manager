@@ -50,4 +50,32 @@ router.post("/new", authUser, async (req, res) => {
   }
 });
 
+router.get("/list", authUser, async (req, res) => {
+  const { businessName } = req.body;
+  const foundBusinessId = await User.findOne({ businessName }, { _id: 1 });
+  const appointments = await Appointment.find({
+    business: foundBusinessId._id,
+  });
+
+  if (!appointments)
+    return res.status(404).json({ message: "Appointments not found" });
+
+  const getCustomer = async (id) => {
+    return await Customer.findById(id);
+  };
+
+  const appointmentsWithCustomersPromises = appointments.map(
+    async (appointment) => {
+      const customer = await getCustomer(appointment.customer);
+      return { ...appointment.toObject(), customerName: customer.customerName };
+    }
+  );
+
+  const appointmentsWithCustomers = await Promise.all(
+    appointmentsWithCustomersPromises
+  );
+
+  res.status(200).json(appointmentsWithCustomers);
+});
+
 module.exports = router;
