@@ -78,4 +78,17 @@ router.get("/list", authUser, async (req, res) => {
   res.status(200).json(appointmentsWithCustomers);
 });
 
+router.get("/customers", authUser, async (req, res) => {
+  const { businessName } = req.body;
+  const foundBusinessId = await User.findOne({ businessName }, { _id: 1 });
+  const customers = await Customer.find({
+    business: foundBusinessId._id,
+  });
+
+  if (!customers)
+    return res.status(404).json({ message: "Customers not found" });
+
+  res.status(200).json(customers);
+});
+
 module.exports = router;
