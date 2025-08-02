@@ -81,11 +81,42 @@ header {
   align-items: center;
   justify-content: space-between;
   transition: all 0.2s ease-in;
+  gap: 1rem;
+}
+
+.new-appointment-button {
+  background-color: var(--accent);
+  color: var(--light);
+  padding: 0.5rem 1rem;
+  border-radius: 0.3rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.new-appointment-button:hover {
+  background-color: var(--accent);
+  transform: scale(1.02);
+  box-shadow: 0px 0px 0.2rem 0 var(--second);
 }
 
 .dropdown-menu li:hover {
   transform: scale(1.02);
   filter: drop-shadow(0 0 0.1rem var(--second));
+}
+
+.appointment-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3;
+  transition: all 0.2s ease-in-out;
 }
 
 @media (max-width: 40rem) {
