@@ -50,6 +50,14 @@ export function AppointmentModal({ activeModal, toggleModal }) {
     toggleModal();
   };
 
+  const getLocalDate = () => {
+    const today = new Date();
+    return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(
+      2,
+      "0"
+    )}-${String(today.getDate()).padStart(2, "0")}`;
+  };
+
   return (
     <div
       className="appointment-modal"
@@ -83,7 +91,7 @@ export function AppointmentModal({ activeModal, toggleModal }) {
               id="date"
               name="date"
               onChange={handleChange}
-              value={formData.date}
+              value={formData.date ? formData.date : getLocalDate()}
             />
             {formError && formError.input === "date" && (
               <span>{formError.message}</span>
