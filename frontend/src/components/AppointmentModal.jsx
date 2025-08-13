@@ -3,24 +3,50 @@ import { useAuth } from "../hooks/useAuth";
 import { useAppointment } from "../hooks/useAppointment";
 import { useState } from "react";
 import { FiXCircle } from "react-icons/fi";
+import { useFormValidations } from "../hooks/useFormValidations";
 
 export function AppointmentModal({ activeModal, toggleModal }) {
   const { userData } = useAuth();
-  const { addAppointment } = useAppointment();
   const [formData, setFormData] = useState({
     businessName: userData.businessName,
     customerName: "",
     date: "",
     notes: "",
   });
+  const { validateCustomerName, validateDate, formError, validateForm } =
+    useFormValidations();
+  const { addAppointment } = useAppointment();
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    const { name, value } = e.target;
+
+    switch (name) {
+      case "customerName":
+        validateCustomerName(value);
+        break;
+      case "date":
+        validateDate(value);
+        break;
+      default:
+        break;
+    }
+
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const formIsValid = validateForm(formData);
+
+    if (!formIsValid) return;
+
     addAppointment(formData);
+    setFormData({
+      businessName: formData.businessName,
+      customerName: "",
+      date: "",
+      notes: "",
+    });
     toggleModal();
   };
 
@@ -42,18 +68,26 @@ export function AppointmentModal({ activeModal, toggleModal }) {
             <input
               type="text"
               id="customerName"
+              name="customerName"
               onChange={handleChange}
               value={formData.customerName}
             />
+            {formError && formError.input === "customerName" && (
+              <span>{formError.message}</span>
+            )}
           </div>
           <div className="form-group">
             <label htmlFor="date">Date:</label>
             <input
               type="date"
               id="date"
+              name="date"
               onChange={handleChange}
               value={formData.date}
             />
+            {formError && formError.input === "date" && (
+              <span>{formError.message}</span>
+            )}
           </div>
           <div className="form-group">
             <label htmlFor="notes">Notes:</label>

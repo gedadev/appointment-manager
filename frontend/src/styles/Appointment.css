@@ -60,3 +60,7 @@
   border-radius: 50%;
   cursor: pointer;
 }
+
+.appointment-form .form-group > span {
+  top: 4.5rem;
+}

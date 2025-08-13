@@ -103,8 +103,12 @@ export const useFormValidations = () => {
               return validateEmail(value);
             case "password":
               return validatePassword(value);
+            case "customerName":
+              return validateCustomerName(value);
+            case "date":
+              return validateDate(value);
             default:
-              break;
+              return true;
           }
         };
 
@@ -140,6 +144,37 @@ export const useFormValidations = () => {
     return true;
   };
 
+  const validateCustomerName = (name) => {
+    if (!name) {
+      setFormError({
+        message: "Enter your customer's name",
+        input: "customerName",
+      });
+      return false;
+    } else {
+      setFormError(null);
+      return true;
+    }
+  };
+
+  const validateDate = (date) => {
+    const dateIsValid = () => {
+      const [y, m, d] = date.split("-").map(Number);
+      return new Date(y, m - 1, d) >= new Date().setHours(0, 0, 0, 0);
+    };
+
+    if (!date) {
+      setFormError({ message: "Enter a date", input: "date" });
+      return false;
+    } else if (!dateIsValid()) {
+      setFormError({ message: "Enter a valid date", input: "date" });
+      return false;
+    } else {
+      setFormError(null);
+      return true;
+    }
+  };
+
   return {
     validateForm,
     validateGeneralInfo,
@@ -148,6 +183,8 @@ export const useFormValidations = () => {
     validateName,
     validateBusinessName,
     validatePhone,
+    validateCustomerName,
+    validateDate,
     formError,
   };
 };
