@@ -5,17 +5,26 @@ import { useState } from "react";
 import { FiXCircle } from "react-icons/fi";
 import { useFormValidations } from "../hooks/useFormValidations";
 
+const getLocalDate = () => {
+  const today = new Date();
+  return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}-${String(today.getDate()).padStart(2, "0")}`;
+};
+
 export function AppointmentModal({ activeModal, toggleModal }) {
   const { userData } = useAuth();
   const [formData, setFormData] = useState({
     businessName: userData.businessName,
     customerName: "",
-    date: "",
+    date: getLocalDate(),
+    cost: "",
     notes: "",
   });
+  const { addAppointment } = useAppointment();
   const { validateCustomerName, validateDate, formError, validateForm } =
     useFormValidations();
-  const { addAppointment } = useAppointment();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -27,6 +36,10 @@ export function AppointmentModal({ activeModal, toggleModal }) {
       case "date":
         validateDate(value);
         break;
+      case "cost":
+        const cleanedValue = value.replace(/\D/g, "");
+        setFormData({ ...formData, [name]: cleanedValue });
+        return;
       default:
         break;
     }
@@ -44,18 +57,18 @@ export function AppointmentModal({ activeModal, toggleModal }) {
     setFormData({
       businessName: formData.businessName,
       customerName: "",
-      date: "",
+      date: getLocalDate(),
+      cost: "",
       notes: "",
     });
     toggleModal();
   };
 
-  const getLocalDate = () => {
-    const today = new Date();
-    return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(
-      2,
-      "0"
-    )}-${String(today.getDate()).padStart(2, "0")}`;
+  const formatCurrency = (value) => {
+    return `$${(value / 100).toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
   };
 
   return (
@@ -72,7 +85,7 @@ export function AppointmentModal({ activeModal, toggleModal }) {
             <FiXCircle />
           </div>
           <div className="form-group">
-            <label htmlFor="customerName">Customer Name:</label>
+            <label htmlFor="customerName">Customer:</label>
             <input
               type="text"
               id="customerName"
@@ -91,9 +104,22 @@ export function AppointmentModal({ activeModal, toggleModal }) {
               id="date"
               name="date"
               onChange={handleChange}
-              value={formData.date ? formData.date : getLocalDate()}
+              value={formData.date}
             />
             {formError && formError.input === "date" && (
+              <span>{formError.message}</span>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="cost">Cost:</label>
+            <input
+              type="text"
+              id="cost"
+              name="cost"
+              onChange={handleChange}
+              value={formatCurrency(formData.cost)}
+            />
+            {formError && formError.input === "cost" && (
               <span>{formError.message}</span>
             )}
           </div>
@@ -101,6 +127,7 @@ export function AppointmentModal({ activeModal, toggleModal }) {
             <label htmlFor="notes">Notes:</label>
             <textarea
               id="notes"
+              name="notes"
               onChange={handleChange}
               value={formData.notes}
             />
