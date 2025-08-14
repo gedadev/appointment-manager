@@ -7,7 +7,7 @@ const User = require("../models/User");
 const router = express.Router();
 
 router.post("/new", authUser, async (req, res) => {
-  const { businessName, customerName, date, notes = "" } = req.body;
+  const { businessName, customerName, date, cost, notes = "" } = req.body;
   const foundBusinessId = await User.findOne({ businessName }, { _id: 1 });
   const foundCustomerId = await Customer.findOne({ customerName }, { _id: 1 });
 
@@ -25,6 +25,7 @@ router.post("/new", authUser, async (req, res) => {
         business: foundBusinessId._id,
         customer: newCustomer._id,
         date,
+        cost,
         notes,
       });
 
@@ -32,7 +33,7 @@ router.post("/new", authUser, async (req, res) => {
         .status(201)
         .json({ message: "Appointment and customer created successfully" });
     } catch (error) {
-      return res.status(500).json({ message: "Customer creation failed" });
+      return res.status(500).json({ message: "Appointment creation failed" });
     }
   }
 
@@ -46,7 +47,7 @@ router.post("/new", authUser, async (req, res) => {
 
     res.status(201).json({ message: "Appointment created successfully" });
   } catch (error) {
-    res.status(500).json({ message: "Customer creation failed" });
+    res.status(500).json({ message: "Appointment creation failed" });
   }
 });
 
