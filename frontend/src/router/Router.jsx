@@ -6,8 +6,7 @@ import { Profile } from "../pages/Profile";
 import { GeneralInfo } from "../components/Profile/GeneralInfo";
 import { WorkingHours } from "../components/Profile/WorkingHours";
 import { AdvancedInfo } from "../components/Profile/AdvancedInfo";
-
-const Dashboard = () => <div>Dashboard Page</div>;
+import { Dashboard } from "../pages/Dashboard";
 
 const router = createBrowserRouter([
   {
