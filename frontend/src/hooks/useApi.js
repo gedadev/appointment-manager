@@ -12,6 +12,11 @@ const API_CONFIG = {
     user: {
       profile: "/user/profile",
     },
+    appointment: {
+      new: "/appointment/new",
+      all: "/appointment/all",
+      customers: "/appointment/customers",
+    },
   },
   defaultHeaders: {
     "Content-Type": "application/json",
