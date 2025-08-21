@@ -90,7 +90,7 @@ router.post("/create", async (req, res) => {
     const { accessToken, refreshToken } = generateToken(user._id);
 
     await RefreshToken.create({
-      userId: foundUser._id,
+      userId: user._id,
       tokenHash: hashToken(refreshToken),
     });
 
