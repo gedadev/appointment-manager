@@ -20,7 +20,6 @@ export const ProfileProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [generalData, setGeneralData] = useState();
   const [hoursData, setHoursData] = useState();
-  const [hoursIsSet, setHoursIsSet] = useState(false);
   const [formChanged, setFormChanged] = useState(false);
   const [validHours, setValidHours] = useState({
     monday: false,
@@ -42,8 +41,9 @@ export const ProfileProvider = ({ children }) => {
   useEffect(() => {
     if (userData) {
       setGeneralData(userData);
-      setHoursData(userData.workingHours);
-      setHoursIsSet(Object.hasOwn(userData, "workingHours"));
+      setHoursData(
+        userData.workingHours ? userData.workingHours : workingHoursMock
+      );
     }
   }, [userData]);
 
@@ -180,7 +180,6 @@ export const ProfileProvider = ({ children }) => {
   const value = {
     generalData,
     hoursData,
-    hoursIsSet,
     validHours,
     handleSubmit,
     handleChange,

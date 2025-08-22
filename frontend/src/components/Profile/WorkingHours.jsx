@@ -1,14 +1,9 @@
 import { FiClock } from "react-icons/fi";
-import { workingHoursMock } from "../../utils/main";
 import { useState } from "react";
 import { useProfile } from "../../hooks/useProfile";
 
 export function WorkingHours() {
-  const { hoursData, hoursIsSet } = useProfile();
-
-  const getHours = () => {
-    return hoursIsSet ? hoursData : workingHoursMock;
-  };
+  const { hoursData } = useProfile();
 
   return (
     <main className="working-hours-container">
@@ -19,7 +14,7 @@ export function WorkingHours() {
             <p>Set your business operating hours</p>
           </div>
           <div>
-            {Object.entries(getHours()).map(([day, hours]) => (
+            {Object.entries(hoursData).map(([day, hours]) => (
               <HoursInputs key={day} day={day} hours={hours} />
             ))}
           </div>
