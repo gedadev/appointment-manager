@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema(
         return this.email;
       },
     },
-    location: { type: String },
+    location: { type: String, default: "MX" },
     timezone: { type: String, default: "America/Mexico_City" },
 
     workingHours: {
