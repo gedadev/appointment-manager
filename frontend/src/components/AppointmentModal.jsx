@@ -19,6 +19,7 @@ export function AppointmentModal({ activeModal, toggleModal }) {
     businessName: userData.businessName,
     customerName: "",
     date: getLocalDate(),
+    time: "00:00",
     cost: "",
     notes: "",
   });
@@ -34,8 +35,11 @@ export function AppointmentModal({ activeModal, toggleModal }) {
         validateCustomerName(value);
         break;
       case "date":
-        validateDate(value);
-        break;
+        const date = value.split("T")[0];
+        const time = value.split("T")[1];
+        validateDate(date);
+        setFormData({ ...formData, date, time });
+        return;
       case "cost":
         const cleanedValue = value.replace(/\D/g, "");
         setFormData({ ...formData, [name]: cleanedValue });
@@ -58,6 +62,7 @@ export function AppointmentModal({ activeModal, toggleModal }) {
       businessName: formData.businessName,
       customerName: "",
       date: getLocalDate(),
+      time: "00:00",
       cost: "",
       notes: "",
     });
@@ -100,11 +105,11 @@ export function AppointmentModal({ activeModal, toggleModal }) {
           <div className="form-group">
             <label htmlFor="date">Date:</label>
             <input
-              type="date"
+              type="datetime-local"
               id="date"
               name="date"
               onChange={handleChange}
-              value={formData.date}
+              value={`${formData.date}T${formData.time}`}
             />
             {formError && formError.input === "date" && (
               <span>{formError.message}</span>
