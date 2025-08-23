@@ -54,8 +54,8 @@ router.post("/new", authUser, async (req, res) => {
   }
 });
 
-router.get("/list", authUser, async (req, res) => {
-  const { businessName } = req.body;
+router.get("/all", authUser, async (req, res) => {
+  const { businessName } = req.user;
   const foundBusinessId = await User.findOne({ businessName }, { _id: 1 });
   const appointments = await Appointment.find({
     business: foundBusinessId._id,
