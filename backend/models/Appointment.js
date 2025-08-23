@@ -16,6 +16,10 @@ const appointmentSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
+    time: {
+      type: String,
+      required: true,
+    },
     cost: { type: Number },
     notes: { type: String },
     status: {

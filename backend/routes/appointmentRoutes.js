@@ -7,7 +7,7 @@ const User = require("../models/User");
 const router = express.Router();
 
 router.post("/new", authUser, async (req, res) => {
-  const { businessName, customerName, date, cost, notes = "" } = req.body;
+  const { businessName, customerName, date, time, cost, notes = "" } = req.body;
   const foundBusinessId = await User.findOne({ businessName }, { _id: 1 });
   const foundCustomerId = await Customer.findOne({ customerName }, { _id: 1 });
 
@@ -25,6 +25,7 @@ router.post("/new", authUser, async (req, res) => {
         business: foundBusinessId._id,
         customer: newCustomer._id,
         date,
+        time,
         cost,
         notes,
       });
@@ -42,6 +43,8 @@ router.post("/new", authUser, async (req, res) => {
       business: foundBusinessId._id,
       customer: foundCustomerId._id,
       date,
+      time,
+      cost,
       notes,
     });
 
