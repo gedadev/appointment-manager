@@ -16,7 +16,7 @@ const getLocalDate = () => {
 export function AppointmentModal({ activeModal, toggleModal }) {
   const { userData } = useAuth();
   const [formData, setFormData] = useState({
-    businessName: userData.businessName,
+    businessName: userData ? userData.businessName : "",
     customerName: "",
     date: getLocalDate(),
     time: "00:00",
