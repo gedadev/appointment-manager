@@ -8,3 +8,19 @@
   width: 100%;
   height: 6rem;
 }
+
+.next-appointments-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin: auto;
+}
+
+.appointment-card {
+  background-color: var(--gray);
+  border-radius: 0.5rem;
+  box-shadow: 0 0.3rem 0.4rem var(--transparent);
+  padding: 1rem;
+  width: 20rem;
+  min-height: 12rem;
+}
