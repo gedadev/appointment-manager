@@ -73,3 +73,28 @@ export const countries = [
   { code: "UY", name: "Uruguay", emoji: "🇺🇾", phoneCode: "+598" },
   { code: "EC", name: "Ecuador", emoji: "🇪🇨", phoneCode: "+593" },
 ];
+
+export const days = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
+
+export const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
