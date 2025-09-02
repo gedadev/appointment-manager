@@ -47,14 +47,50 @@
   font-size: 0.9rem;
 }
 
-.appointment-card span {
+.status-container {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  font-size: 0.8rem;
-  background-color: var(--error);
+  top: 0;
+  right: 0;
   color: var(--light);
+}
+
+.status-container span {
+  font-size: 0.8rem;
+  text-align: center;
   padding: 0.2rem 0.4rem;
   border-radius: 0.3rem;
   box-shadow: 0 0.1rem 0.3rem var(--transparent);
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  color: var(--dark);
+}
+
+.status-container span:hover {
+  box-shadow: 0 0 8px var(--accent-alt);
+}
+
+.status-container .pending {
+  background-color: var(--status-pending);
+}
+
+.status-container .confirmed {
+  background-color: var(--status-confirmed);
+}
+
+.status-container .cancelled {
+  background-color: var(--status-cancelled);
+}
+
+.status-container .completed {
+  background-color: var(--status-completed);
+}
+
+.status-selector {
+  position: absolute;
+  top: 0rem;
+  right: 0rem;
+  transition: all 0.3s ease-in;
 }
