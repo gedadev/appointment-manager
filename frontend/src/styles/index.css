@@ -67,4 +67,9 @@ a {
   --second: rgb(167, 197, 235);
   --error: rgb(255, 77, 77);
   --transparent: rgba(0, 0, 0, 0.2);
+
+  --status-confirmed: rgb(16, 185, 129);
+  --status-pending: rgb(234, 179, 8);
+  --status-completed: rgb(59, 130, 246);
+  --status-cancelled: rgb(239, 68, 68);
 }
