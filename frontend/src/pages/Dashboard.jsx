@@ -1,8 +1,8 @@
 import "../styles/Dashboard.css";
-import { useState } from "react";
 import { Header } from "../components/Dashboard/Header";
 import { useAppointment } from "../hooks/useAppointment";
 import { days, months } from "../utils/main";
+import { FiCalendar, FiClock, FiDollarSign, FiFileText } from "react-icons/fi";
 
 export function Dashboard() {
   const { appointments, error } = useAppointment();
@@ -36,11 +36,21 @@ export function Dashboard() {
             {appointments.length > 0 &&
               appointments.map((appointment) => (
                 <div className="appointment-card" key={appointment._id}>
-                  <p>{appointment.customerName}</p>
-                  <p>{formatDate(appointment.date)}</p>
-                  <p>{appointment.time}</p>
-                  <p>{formatCurrency(appointment.cost)}</p>
-                  <p>{appointment.notes}</p>
+                  <h1>{appointment.customerName}</h1>
+                  <div className="appointment-details">
+                    <div>
+                      <FiCalendar /> {formatDate(appointment.date)}
+                    </div>
+                    <div>
+                      <FiClock /> {appointment.time}
+                    </div>
+                    <div>
+                      <FiDollarSign /> {formatCurrency(appointment.cost)}
+                    </div>
+                    <div>
+                      <FiFileText /> {appointment.notes}
+                    </div>
+                  </div>
                   <span>{appointment.status}</span>
                 </div>
               ))}
