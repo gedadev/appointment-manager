@@ -3,16 +3,26 @@ import { useAppointment } from "../../hooks/useAppointment";
 import { days, months } from "../../utils/main";
 import { FiCalendar, FiClock, FiDollarSign, FiFileText } from "react-icons/fi";
 import toast from "react-hot-toast";
+import { AppointmentFilters } from "./AppointmentFilters";
 
 export function Summary() {
-  const { appointments, error } = useAppointment();
+  const { appointments, filteredAppointments } = useAppointment();
+
+  const getAppointments = () => {
+    if (filteredAppointments.length > 0) {
+      return filteredAppointments;
+    }
+
+    return appointments;
+  };
 
   return (
     <div className="summary-section">
       <div className="summary-container"></div>
+      <AppointmentFilters />
       <div className="next-appointments-container">
         {appointments.length > 0 &&
-          appointments.map((appointment) => (
+          getAppointments().map((appointment) => (
             <AppointmentCard key={appointment._id} appointment={appointment} />
           ))}
       </div>
