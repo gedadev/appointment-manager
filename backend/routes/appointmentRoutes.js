@@ -82,6 +82,24 @@ router.get("/all", authUser, async (req, res) => {
   res.status(200).json(appointmentsWithCustomers);
 });
 
+router.put("/update/:id", authUser, async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const foundAppointment = await Appointment.findById(id);
+
+  if (!foundAppointment)
+    return res.status(404).json({ message: "Appointment not found" });
+
+  try {
+    await Appointment.findByIdAndUpdate(id, { status });
+
+    res.status(200).json({ message: "Appointment updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Appointment update failed" });
+  }
+});
+
 router.get("/customers", authUser, async (req, res) => {
   const { businessName } = req.body;
   const foundBusinessId = await User.findOne({ businessName }, { _id: 1 });
@@ -94,5 +112,7 @@ router.get("/customers", authUser, async (req, res) => {
 
   res.status(200).json(customers);
 });
+
+router.put("/update/:id", authUser, async (req, res) => {});
 
 module.exports = router;
