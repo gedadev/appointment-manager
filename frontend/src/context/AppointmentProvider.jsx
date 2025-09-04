@@ -7,6 +7,7 @@ export const AppointmentProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [appointments, setAppointments] = useState([]);
+  const [filteredAppointments, setFilteredAppointments] = useState([]);
   const { endpoints, request } = useApi();
   const { userData } = useAuth();
 
@@ -77,12 +78,23 @@ export const AppointmentProvider = ({ children }) => {
     }
   };
 
+  const searchCustomer = (name) => {
+    const filteredAppointments = appointments.filter((appointment) => {
+      return appointment.customerName
+        .toLowerCase()
+        .includes(name.toLowerCase());
+    });
+    setFilteredAppointments(filteredAppointments);
+  };
+
   const value = {
     loading,
     error,
     addAppointment,
     appointments,
+    filteredAppointments,
     updateAppointment,
+    searchCustomer,
   };
 
   return (
