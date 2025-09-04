@@ -1,8 +1,10 @@
-import { FiFilter, FiSearch } from "react-icons/fi";
+import { useState } from "react";
 import { useAppointment } from "../../hooks/useAppointment";
+import { FiFilter, FiSearch } from "react-icons/fi";
 
 export function AppointmentFilters() {
   const { searchCustomer } = useAppointment();
+  const [activeFilters, setActiveFilters] = useState(false);
 
   const handleSearch = (e) => {
     const { value } = e.target;
@@ -19,9 +21,77 @@ export function AppointmentFilters() {
           onChange={handleSearch}
         />
       </div>
-      <div className="filters">
+      <div className="filters" onClick={() => setActiveFilters(!activeFilters)}>
         <FiFilter />
       </div>
+      <FiltersMenu activeFilters={activeFilters} />
     </div>
   );
 }
+
+const FiltersMenu = ({ activeFilters }) => {
+  return (
+    <div
+      className="filters-menu"
+      style={
+        activeFilters
+          ? { opacity: "1", transform: "translateY(0)", pointerEvents: "all" }
+          : {
+              opacity: "0",
+              transform: "translateY(-20%)",
+              pointerEvents: "none",
+            }
+      }
+    >
+      <div className="status-filter">
+        <span>Status:</span>
+        <div>
+          <input type="checkbox" id="pending" name="pending" />
+          <label htmlFor="pending">Pending</label>
+        </div>
+        <div>
+          <input type="checkbox" id="confirmed" name="confirmed" />
+          <label htmlFor="confirmed">Confirmed</label>
+        </div>
+        <div>
+          <input type="checkbox" id="cancelled" name="cancelled" />
+          <label htmlFor="cancelled">Cancelled</label>
+        </div>
+        <div>
+          <input type="checkbox" id="completed" name="completed" />
+          <label htmlFor="completed">Completed</label>
+        </div>
+      </div>
+      <div className="date-filter">
+        <span>Date:</span>
+        <div>
+          <input type="checkbox" id="today" name="today" />
+          <label htmlFor="today">Today</label>
+        </div>
+        <div>
+          <input type="checkbox" id="tomorrow" name="tomorrow" />
+          <label htmlFor="tomorrow">Tomorrow</label>
+        </div>
+        <div>
+          <input type="checkbox" id="next-week" name="next-week" />
+          <label htmlFor="next-week">Next week</label>
+        </div>
+      </div>
+      <div className="time-filter">
+        <span>Time:</span>
+        <div>
+          <input type="checkbox" id="morning" name="morning" />
+          <label htmlFor="morning">Morning</label>
+        </div>
+        <div>
+          <input type="checkbox" id="afternoon" name="afternoon" />
+          <label htmlFor="afternoon">Afternoon</label>
+        </div>
+        <div>
+          <input type="checkbox" id="evening" name="evening" />
+          <label htmlFor="evening">Evening</label>
+        </div>
+      </div>
+    </div>
+  );
+};
