@@ -16,8 +16,8 @@
   align-items: center;
   gap: 2rem 1rem;
   margin: auto;
-  max-width: min(100%, 80rem);
-  padding: 1rem;
+  max-width: min(100%, 70rem);
+  padding: 0 1rem;
 }
 
 .appointment-card {
@@ -93,4 +93,56 @@
   top: 0rem;
   right: 0rem;
   transition: all 0.3s ease-in;
+}
+
+.filters-container {
+  max-width: min(100%, 70rem);
+  margin: auto;
+  padding: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.search-bar {
+  width: 100%;
+  position: relative;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 0.2rem 2rem;
+  border-radius: 0.3rem;
+  border: 0.1rem solid var(--transparent);
+  font-size: 0.9rem;
+  transition: all 0.2s ease-in;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.search-bar svg {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  left: 0.5rem;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.filters {
+  width: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: all 0.2s ease-in;
+}
+
+.filters:hover {
+  opacity: 1;
 }
