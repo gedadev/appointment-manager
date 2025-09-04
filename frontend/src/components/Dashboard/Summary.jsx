@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAppointment } from "../../hooks/useAppointment";
 import { days, months } from "../../utils/main";
 import { FiCalendar, FiClock, FiDollarSign, FiFileText } from "react-icons/fi";
+import toast from "react-hot-toast";
 
 export function Summary() {
   const { appointments, error } = useAppointment();
@@ -21,6 +22,7 @@ export function Summary() {
 
 const AppointmentCard = ({ appointment }) => {
   const [activeStatusSelector, setActiveStatusSelector] = useState(false);
+  const { updateAppointment } = useAppointment();
 
   const formatDate = (appDate) => {
     const dateObj = new Date(appDate);
@@ -43,6 +45,21 @@ const AppointmentCard = ({ appointment }) => {
 
   const handleStatusChange = () => {
     setActiveStatusSelector(!activeStatusSelector);
+  };
+
+  const handleStatusSelection = async (e) => {
+    const newStatus = e.target.className;
+    setActiveStatusSelector(false);
+
+    const success = await updateAppointment(appointment._id, {
+      status: newStatus,
+    });
+
+    if (success) {
+      toast.success("Status updated successfully");
+    } else {
+      toast.error(error);
+    }
   };
 
   return (
@@ -82,6 +99,7 @@ const AppointmentCard = ({ appointment }) => {
 
         <div
           className="status-selector"
+          onClick={handleStatusSelection}
           style={
             activeStatusSelector
               ? {

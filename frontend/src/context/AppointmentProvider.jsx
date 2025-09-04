@@ -10,27 +10,27 @@ export const AppointmentProvider = ({ children }) => {
   const { endpoints, request } = useApi();
   const { userData } = useAuth();
 
+  const fetchAppointments = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await request(endpoints.appointment.all, {
+        method: "GET",
+      });
+
+      if (response instanceof Error) throw response;
+      setAppointments(response);
+      return { success: true };
+    } catch (error) {
+      setError(error.message);
+      return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchAppointments = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-
-        const response = await request(endpoints.appointment.all, {
-          method: "GET",
-        });
-
-        if (response instanceof Error) throw response;
-        setAppointments(response);
-        return { success: true };
-      } catch (error) {
-        setError(error.message);
-        return { success: false };
-      } finally {
-        setLoading(false);
-      }
-    };
-
     userData && fetchAppointments();
   }, [userData]);
 
@@ -55,11 +55,34 @@ export const AppointmentProvider = ({ children }) => {
     }
   };
 
+  const updateAppointment = async (id, data) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await request(`${endpoints.appointment.update}/${id}`, {
+        method: "PUT",
+        body: JSON.stringify(data),
+      });
+
+      if (response instanceof Error) throw response;
+
+      fetchAppointments();
+      return { success: true };
+    } catch (error) {
+      setError(error.message);
+      return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const value = {
     loading,
     error,
     addAppointment,
     appointments,
+    updateAppointment,
   };
 
   return (
