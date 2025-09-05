@@ -8,6 +8,7 @@ export const AppointmentProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
+  const [appointmentsFilters, setAppointmentsFilters] = useState({});
   const { endpoints, request } = useApi();
   const { userData } = useAuth();
 
@@ -87,6 +88,36 @@ export const AppointmentProvider = ({ children }) => {
     setFilteredAppointments(filteredAppointments);
   };
 
+  const handleAppointmentFilters = (filterName, filterValue, checked) => {
+    setAppointmentsFilters((prev) => {
+      const keys = Object.keys(prev);
+
+      if (!keys.includes(filterName) && checked)
+        return { ...prev, [filterName]: [filterValue] };
+
+      if (!checked) {
+        const newFilter = prev[filterName].filter(
+          (item) => item !== filterValue
+        );
+
+        if (newFilter.length === 0) {
+          const { [filterName]: _, ...rest } = prev;
+          return rest;
+        }
+
+        return {
+          ...prev,
+          [filterName]: prev[filterName].filter((item) => item !== filterValue),
+        };
+      }
+
+      return {
+        ...prev,
+        [filterName]: [...prev[filterName], filterValue],
+      };
+    });
+  };
+
   const value = {
     loading,
     error,
@@ -95,6 +126,8 @@ export const AppointmentProvider = ({ children }) => {
     filteredAppointments,
     updateAppointment,
     searchCustomer,
+    handleAppointmentFilters,
+    appointmentsFilters,
   };
 
   return (

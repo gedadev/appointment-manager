@@ -30,6 +30,17 @@ export function AppointmentFilters() {
 }
 
 const FiltersMenu = ({ activeFilters }) => {
+  const { handleAppointmentFilters } = useAppointment();
+
+  const handleFilters = (e) => {
+    const { type, name, checked } = e.target;
+
+    if (type !== "checkbox") return;
+
+    const filterName = e.target.closest(".filter-name").id;
+    handleAppointmentFilters(filterName, name, checked);
+  };
+
   return (
     <div
       className="filters-menu"
@@ -42,8 +53,9 @@ const FiltersMenu = ({ activeFilters }) => {
               pointerEvents: "none",
             }
       }
+      onClick={handleFilters}
     >
-      <div className="status-filter">
+      <div className="filter-name" id="status">
         <span>Status:</span>
         <div>
           <input type="checkbox" id="pending" name="pending" />
@@ -62,7 +74,7 @@ const FiltersMenu = ({ activeFilters }) => {
           <label htmlFor="completed">Completed</label>
         </div>
       </div>
-      <div className="date-filter">
+      <div className="filter-name" id="date">
         <span>Date:</span>
         <div>
           <input type="checkbox" id="today" name="today" />
@@ -77,7 +89,7 @@ const FiltersMenu = ({ activeFilters }) => {
           <label htmlFor="next-week">Next week</label>
         </div>
       </div>
-      <div className="time-filter">
+      <div className="filter-name" id="time">
         <span>Time:</span>
         <div>
           <input type="checkbox" id="morning" name="morning" />
