@@ -7,6 +7,7 @@ import { GeneralInfo } from "../components/Profile/GeneralInfo";
 import { WorkingHours } from "../components/Profile/WorkingHours";
 import { AdvancedInfo } from "../components/Profile/AdvancedInfo";
 import { Dashboard } from "../pages/Dashboard";
+import { Summary } from "../components/Dashboard/Summary";
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,20 @@ const router = createBrowserRouter([
   {
     path: "/dashboard",
     element: <Dashboard />,
+    children: [
+      {
+        path: "",
+        element: <Summary />,
+      },
+      {
+        path: "appointments",
+        element: <></>,
+      },
+      {
+        path: "customers",
+        element: <></>,
+      },
+    ],
   },
 ]);
 
