@@ -89,33 +89,42 @@ export const AppointmentProvider = ({ children }) => {
   };
 
   const handleAppointmentFilters = (filterName, filterValue, checked) => {
-    setAppointmentsFilters((prev) => {
-      const keys = Object.keys(prev);
+    const updateFilters = () => {
+      const keys = Object.keys(appointmentsFilters);
 
       if (!keys.includes(filterName) && checked)
-        return { ...prev, [filterName]: [filterValue] };
+        return { ...appointmentsFilters, [filterName]: [filterValue] };
 
       if (!checked) {
-        const newFilter = prev[filterName].filter(
+        const newFilter = appointmentsFilters[filterName].filter(
           (item) => item !== filterValue
         );
 
         if (newFilter.length === 0) {
-          const { [filterName]: _, ...rest } = prev;
+          const { [filterName]: _, ...rest } = appointmentsFilters;
           return rest;
         }
 
         return {
-          ...prev,
-          [filterName]: prev[filterName].filter((item) => item !== filterValue),
+          ...appointmentsFilters,
+          [filterName]: appointmentsFilters[filterName].filter(
+            (item) => item !== filterValue
+          ),
         };
       }
 
       return {
-        ...prev,
-        [filterName]: [...prev[filterName], filterValue],
+        ...appointmentsFilters,
+        [filterName]: [...appointmentsFilters[filterName], filterValue],
       };
-    });
+    };
+
+    const newFilters = updateFilters();
+
+    if (Object.keys(newFilters).length === 0)
+      setFilteredAppointments(appointments);
+
+    setAppointmentsFilters(newFilters);
   };
 
   const value = {
