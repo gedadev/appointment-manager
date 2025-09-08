@@ -53,6 +53,7 @@ export function AppointmentModal({ activeModal, toggleModal }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!formData.businessName) formData.businessName = userData.businessName;
     const formIsValid = validateForm(formData);
 
     if (!formIsValid) return;
