@@ -5,12 +5,15 @@ import { FiCalendar, FiClock, FiDollarSign, FiFileText } from "react-icons/fi";
 import toast from "react-hot-toast";
 
 export function NextAppointments() {
-  const { appointments, filteredAppointments } = useAppointment();
+  const { appointments, filteredAppointments, appointmentsFilters } =
+    useAppointment();
 
   const getAppointments = () => {
-    if (filteredAppointments.length > 0) {
+    if (
+      Object.keys(appointmentsFilters).length > 0 ||
+      filteredAppointments.length > 0
+    )
       return filteredAppointments;
-    }
 
     return appointments;
   };
