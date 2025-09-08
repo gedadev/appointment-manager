@@ -32,10 +32,10 @@ const AppointmentCard = ({ appointment }) => {
   const formatDate = (appDate) => {
     const dateObj = new Date(appDate);
     const [day, month, date, year] = [
-      String(dateObj.getDay()),
-      String(dateObj.getMonth()),
-      String(dateObj.getDate()),
-      String(dateObj.getFullYear()),
+      String(dateObj.getUTCDay()),
+      String(dateObj.getUTCMonth()),
+      String(dateObj.getUTCDate()),
+      String(dateObj.getUTCFullYear()),
     ];
 
     return `${days[day]}, ${months[month]} ${date}`;
