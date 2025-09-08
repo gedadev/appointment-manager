@@ -213,6 +213,31 @@ export const AppointmentProvider = ({ children }) => {
     setFilteredAppointments(filtered);
   };
 
+  const getSummaryInfo = () => {
+    const today = new Date();
+    today.setUTCHours(0, 0, 0, 0);
+
+    const lastMonth = new Date(today);
+    lastMonth.setUTCDate(today.getUTCDate() - 30);
+
+    const lastMonthAppointments = appointments.filter((appointment) => {
+      const date = new Date(appointment.date).getTime();
+      return date >= lastMonth.getTime() && date < today.getTime();
+    });
+
+    const upcomingAppointments = appointments.filter((appointment) => {
+      const date = new Date(appointment.date).getTime();
+      return date >= today.getTime();
+    });
+
+    const lastMonthRevenue = lastMonthAppointments.reduce(
+      (total, appointment) => total + appointment.cost / 100,
+      0
+    );
+
+    return { lastMonthAppointments, upcomingAppointments, lastMonthRevenue };
+  };
+
   const value = {
     loading,
     error,
@@ -223,6 +248,7 @@ export const AppointmentProvider = ({ children }) => {
     searchCustomer,
     handleAppointmentFilters,
     appointmentsFilters,
+    getSummaryInfo,
   };
 
   return (
