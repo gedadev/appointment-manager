@@ -85,6 +85,10 @@ const FiltersMenu = ({ activeFilters }) => {
           <label htmlFor="tomorrow">Tomorrow</label>
         </div>
         <div>
+          <input type="checkbox" id="this-week" name="this-week" />
+          <label htmlFor="this-week">This week</label>
+        </div>
+        <div>
           <input type="checkbox" id="next-week" name="next-week" />
           <label htmlFor="next-week">Next week</label>
         </div>

@@ -124,7 +124,93 @@ export const AppointmentProvider = ({ children }) => {
     if (Object.keys(newFilters).length === 0)
       setFilteredAppointments(appointments);
 
+    filterAppointments(newFilters);
+
     setAppointmentsFilters(newFilters);
+  };
+
+  const filterAppointments = (filters) => {
+    const filtered = appointments.filter((appointment) => {
+      const passFilters = Object.entries(filters).reduce(
+        (validAppointment, [filterName, filters]) => {
+          switch (filterName) {
+            case "status":
+              if (!filters.includes(appointment.status)) return false;
+              break;
+            case "date":
+              const appointmentDate = new Date(appointment.date).getTime();
+
+              const todayStart = new Date();
+              todayStart.setUTCHours(0, 0, 0, 0);
+              const todayEnd = new Date();
+              todayEnd.setUTCHours(23, 59, 59, 999);
+
+              const dateRanges = filters.map((item) => {
+                switch (item) {
+                  case "today":
+                    return [todayStart.getTime(), todayEnd.getTime()];
+                  case "tomorrow":
+                    const tomorrowStart = new Date(todayStart);
+                    tomorrowStart.setUTCDate(todayStart.getUTCDate() + 1);
+                    const tomorrowEnd = new Date(todayEnd);
+                    tomorrowEnd.setUTCDate(todayEnd.getUTCDate() + 1);
+
+                    return [tomorrowStart.getTime(), tomorrowEnd.getTime()];
+                  case "this-week":
+                    const thisWeekStart = new Date(todayStart);
+                    thisWeekStart.setUTCDate(todayStart.getUTCDate() + 2);
+                    const thisWeekEnd = new Date(todayEnd);
+                    thisWeekEnd.setUTCDate(todayEnd.getUTCDate() + 7);
+
+                    return [thisWeekStart.getTime(), thisWeekEnd.getTime()];
+                  case "next-week":
+                    const nextWeekStart = new Date(todayStart);
+                    nextWeekStart.setUTCDate(todayStart.getUTCDate() + 8);
+                    const nextWeekEnd = new Date(todayEnd);
+                    nextWeekEnd.setUTCDate(todayEnd.getUTCDate() + 14);
+
+                    return [nextWeekStart.getTime(), nextWeekEnd.getTime()];
+                  default:
+                    break;
+                }
+              });
+              const dateInRange = dateRanges.some(
+                ([min, max]) => appointmentDate >= min && appointmentDate <= max
+              );
+              if (!dateInRange) return false;
+              break;
+            case "time":
+              const timeRanges = filters.map((item) => {
+                switch (item) {
+                  case "morning":
+                    return [0, 11];
+                  case "afternoon":
+                    return [12, 18];
+                  case "evening":
+                    return [19, 23];
+                  default:
+                    break;
+                }
+              });
+              const appointmentHour = appointment.time.split(":")[0];
+              const timeInRange = timeRanges.some(
+                ([min, max]) => appointmentHour >= min && appointmentHour <= max
+              );
+              if (!timeInRange) return false;
+              break;
+            default:
+              return validAppointment;
+          }
+
+          return validAppointment;
+        },
+        true
+      );
+
+      if (passFilters) return appointment;
+    });
+
+    setFilteredAppointments(filtered);
   };
 
   const value = {
