@@ -79,18 +79,11 @@ export const AppointmentProvider = ({ children }) => {
     }
   };
 
-  const searchCustomer = (name) => {
-    const filteredAppointments = appointments.filter((appointment) => {
-      return appointment.customerName
-        .toLowerCase()
-        .includes(name.toLowerCase());
-    });
-    setFilteredAppointments(filteredAppointments);
-  };
-
   const handleAppointmentFilters = (filterName, filterValue, checked) => {
     const updateFilters = () => {
       const keys = Object.keys(appointmentsFilters);
+      if (filterName === "search")
+        return { ...appointmentsFilters, [filterName]: filterValue };
 
       if (!keys.includes(filterName) && checked)
         return { ...appointmentsFilters, [filterName]: [filterValue] };
@@ -124,6 +117,7 @@ export const AppointmentProvider = ({ children }) => {
     if (Object.keys(newFilters).length === 0)
       setFilteredAppointments(appointments);
 
+    console.log(newFilters);
     filterAppointments(newFilters);
 
     setAppointmentsFilters(newFilters);
@@ -134,6 +128,14 @@ export const AppointmentProvider = ({ children }) => {
       const passFilters = Object.entries(filters).reduce(
         (validAppointment, [filterName, filters]) => {
           switch (filterName) {
+            case "search":
+              if (
+                !appointment.customerName
+                  .toLowerCase()
+                  .includes(filters.toLowerCase())
+              )
+                return false;
+              break;
             case "status":
               if (!filters.includes(appointment.status)) return false;
               break;
@@ -245,7 +247,6 @@ export const AppointmentProvider = ({ children }) => {
     appointments,
     filteredAppointments,
     updateAppointment,
-    searchCustomer,
     handleAppointmentFilters,
     appointmentsFilters,
     getSummaryInfo,

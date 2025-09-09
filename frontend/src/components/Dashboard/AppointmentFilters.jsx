@@ -3,12 +3,12 @@ import { useAppointment } from "../../hooks/useAppointment";
 import { FiFilter, FiSearch } from "react-icons/fi";
 
 export function AppointmentFilters() {
-  const { searchCustomer } = useAppointment();
+  const { handleAppointmentFilters } = useAppointment();
   const [activeFilters, setActiveFilters] = useState(false);
 
   const handleSearch = (e) => {
-    const { value } = e.target;
-    searchCustomer(value);
+    const { name, value } = e.target;
+    handleAppointmentFilters(name, value);
   };
 
   return (
@@ -18,6 +18,7 @@ export function AppointmentFilters() {
         <input
           type="search"
           placeholder="Search customer..."
+          name="search"
           onChange={handleSearch}
         />
       </div>
