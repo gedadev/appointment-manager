@@ -15,17 +15,58 @@ header {
 }
 
 .login-button-nav {
-  width: 5rem;
   background-color: var(--accent-alt);
   color: var(--light);
   font-size: 1rem;
   font-weight: 500;
-  border-radius: 1rem;
-  padding: 0.5rem;
+  border-radius: 0.4rem;
+  padding: 0.5rem 0.8rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .navbar-branding {
   color: var(--light);
+}
+
+.navbar-menu {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+
+.navbar-menu-links ul {
+  display: flex;
+  gap: 1rem;
+}
+
+.mobile-menu-button {
+  cursor: pointer;
+  z-index: 1;
+}
+
+.navbar-mobile-menu {
+  position: absolute;
+  top: 4rem;
+  right: 0;
+  background-color: var(--accent);
+  width: 100%;
+  text-align: center;
+  transition: all 0.1s ease-in;
+}
+
+.navbar-mobile-menu > .navbar-menu {
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.navbar-mobile-menu > .navbar-menu > .navbar-menu-links ul {
+  flex-direction: column;
+}
+
+.navbar-mobile-menu > .navbar-menu > .menu-button {
+  margin: 1rem 0;
 }
 
 .user-menu-nav {
@@ -294,13 +335,13 @@ header {
   padding: 0.8rem 0.5rem;
 }
 
-.footer-brand {
+.brand {
   display: flex;
   align-items: center;
   gap: 0.5rem;
 }
 
-.footer-brand span {
+.brand span {
   background-color: var(--accent-alt);
   color: var(--gray);
   padding: 0.3rem;
