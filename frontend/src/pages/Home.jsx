@@ -1,6 +1,11 @@
 import "../styles/Home.css";
 import { Navbar } from "../components/Navbar";
-import { CTA, FeaturesSection, HeroSection } from "../components/LandingPage";
+import {
+  CTA,
+  FeaturesSection,
+  Footer,
+  HeroSection,
+} from "../components/LandingPage";
 
 export function Home() {
   return (
@@ -11,6 +16,7 @@ export function Home() {
       <HeroSection />
       <FeaturesSection />
       <CTA />
+      <Footer />
     </main>
   );
 }

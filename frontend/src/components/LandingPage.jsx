@@ -100,3 +100,32 @@ export const CTA = () => {
     </section>
   );
 };
+
+export const Footer = () => {
+  return (
+    <section className="footer">
+      <div className="links-container">
+        <div className="footer-brand">
+          <span>
+            <FiCalendar />
+          </span>
+          <h3>AppointmentPro</h3>
+        </div>
+        <div className="footer-links">
+          <Link>
+            <p>Privacy Police</p>
+          </Link>
+          <Link>
+            <p>Terms of Service</p>
+          </Link>
+          <Link>
+            <p>Support</p>
+          </Link>
+        </div>
+      </div>
+      <div className="site-rights">
+        &copy; AppointmentPro 2025. All rights reserved
+      </div>
+    </section>
+  );
+};
