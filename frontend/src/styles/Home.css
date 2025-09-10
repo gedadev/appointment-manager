@@ -237,6 +237,46 @@ header {
   text-align: center;
 }
 
+.call-to-action {
+  min-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--accent-alt);
+  color: var(--light);
+}
+
+.cta-content {
+  width: min(30rem, 100%);
+  padding: 5rem 0.5rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.cta-content h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+}
+
+.cta-content p {
+  color: rgb(205, 205, 205);
+}
+
+.cta-content button {
+  background-color: var(--accent);
+  color: var(--light);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cta-content button:hover {
+  box-shadow: 0 0 8px var(--accent);
+}
+
 @media (width <= 40rem) {
   .hero-content h1 {
     font-size: 2.5rem;
