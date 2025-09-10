@@ -1,5 +1,6 @@
 import { useState } from "react";
 import {
+  FiCalendar,
   FiClock,
   FiFilePlus,
   FiLogOut,
@@ -9,6 +10,7 @@ import {
 import { AppointmentModal } from "../AppointmentModal";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { MdDashboard } from "react-icons/md";
 
 export function Header() {
   const [activeModal, setActiveModal] = useState(false);
@@ -20,10 +22,14 @@ export function Header() {
 
   return (
     <header className="header">
-      <div>
-        <h1>Dashboard</h1>
-        <p>Manage your business appointments with ease.</p>
-      </div>
+      <Link to={"/"}>
+        <div className="brand">
+          <span>
+            <FiCalendar />
+          </span>
+          <h3>AppointmentPro</h3>
+        </div>
+      </Link>
       <div className="header-buttons">
         <button className="new-appointment-button" onClick={toggleModal}>
           New Appointment <FiFilePlus />
@@ -56,6 +62,12 @@ const HeaderMenu = ({ activeMenu }) => {
     >
       <span>Your Settings</span>
       <ul>
+        <Link to={"/dashboard"}>
+          <li>
+            <MdDashboard />
+            Dashboard
+          </li>
+        </Link>
         <Link to={"/profile"}>
           <li>
             <FiUser />

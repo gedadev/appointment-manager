@@ -1,14 +1,14 @@
 import "../styles/Profile.css";
-import { Navbar } from "../components/Navbar";
 import { ProfileProvider } from "../context/ProfileProvider";
 import { ProfileHeader } from "../components/Profile/ProfileHeader";
 import { ProfileForm } from "../components/Profile/ProfileForm";
+import { Header } from "../components/Dashboard/Header";
 
 export function Profile() {
   return (
     <main>
       <header>
-        <Navbar />
+        <Header />
       </header>
       <section className="profile-section">
         <ProfileProvider>
