@@ -1,12 +1,22 @@
 import { useState } from "react";
 import { useAppointment } from "../../hooks/useAppointment";
 import { days, months } from "../../utils/main";
-import { FiCalendar, FiClock, FiDollarSign, FiFileText } from "react-icons/fi";
+import {
+  FiCalendar,
+  FiClock,
+  FiDollarSign,
+  FiFilePlus,
+  FiFileText,
+} from "react-icons/fi";
 import toast from "react-hot-toast";
+import { AppointmentModal } from "../AppointmentModal";
 
 export function NextAppointments() {
+  const [activeModal, setActiveModal] = useState(false);
   const { appointments, filteredAppointments, appointmentsFilters } =
     useAppointment();
+
+  const toggleModal = () => setActiveModal(!activeModal);
 
   const getAppointments = () => {
     const sortByDate = (appointmentsList) => {
@@ -27,10 +37,22 @@ export function NextAppointments() {
 
   return (
     <div className="next-appointments-container">
-      {appointments.length > 0 &&
+      {appointments.length > 0 ? (
         getAppointments().map((appointment) => (
           <AppointmentCard key={appointment._id} appointment={appointment} />
-        ))}
+        ))
+      ) : (
+        <div className="first-appointment">
+          <h1>Add your first appointment</h1>
+          <button className="new-appointment-button" onClick={toggleModal}>
+            New Appointment <FiFilePlus />
+          </button>
+          <AppointmentModal
+            activeModal={activeModal}
+            toggleModal={toggleModal}
+          />
+        </div>
+      )}
     </div>
   );
 }
