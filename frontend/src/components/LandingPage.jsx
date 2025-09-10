@@ -66,8 +66,8 @@ export const FeaturesSection = () => {
         </p>
       </div>
       <div className="features-cards-container">
-        {featureData.map((feature) => (
-          <div className="feature-card">
+        {featureData.map((feature, i) => (
+          <div className="feature-card" key={i}>
             <div className="card-header">
               <span>{feature.icon}</span>
               <h2>{feature.title}</h2>
@@ -105,7 +105,7 @@ export const Footer = () => {
   return (
     <section className="footer">
       <div className="links-container">
-        <div className="footer-brand">
+        <div className="brand">
           <span>
             <FiCalendar />
           </span>
