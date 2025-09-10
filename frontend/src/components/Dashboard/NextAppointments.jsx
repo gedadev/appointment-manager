@@ -9,13 +9,20 @@ export function NextAppointments() {
     useAppointment();
 
   const getAppointments = () => {
+    const sortByDate = (appointmentsList) => {
+      return appointmentsList.sort(
+        (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
+    };
+
     if (
       Object.keys(appointmentsFilters).length > 0 ||
       filteredAppointments.length > 0
-    )
-      return filteredAppointments;
+    ) {
+      return sortByDate(filteredAppointments);
+    }
 
-    return appointments;
+    return sortByDate(appointments);
   };
 
   return (
