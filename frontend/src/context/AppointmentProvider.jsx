@@ -48,6 +48,7 @@ export const AppointmentProvider = ({ children }) => {
 
       if (response instanceof Error) throw response;
 
+      fetchAppointments();
       return { success: true };
     } catch (error) {
       setError(error.message);
