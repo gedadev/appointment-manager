@@ -1,7 +1,10 @@
 import { useCallback } from "react";
 
+// const BASE_URL = "http://localhost:3000"
+const BASE_URL = "https://appointment-manager-production-bcf4.up.railway.app";
+
 const API_CONFIG = {
-  baseUrl: "http://localhost:3000",
+  baseUrl: BASE_URL,
   endpoints: {
     auth: {
       login: "/auth/login",
