@@ -8,6 +8,7 @@ import { WorkingHours } from "../components/Profile/WorkingHours";
 import { AdvancedInfo } from "../components/Profile/AdvancedInfo";
 import { Dashboard } from "../pages/Dashboard";
 import { Summary } from "../components/Dashboard/Summary";
+import { RecentAppointments } from "../components/Dashboard/RecentAppointments";
 
 const router = createBrowserRouter([
   {
@@ -50,7 +51,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "",
-        element: <Summary />,
+        element: <RecentAppointments />,
       },
       {
         path: "appointments",

@@ -88,8 +88,24 @@
   font-weight: 600;
 }
 
-.next-appointments-container,
-.summary-container {
+.summary-button-container {
+  max-width: min(100%, 70rem);
+  margin: 1rem auto 0;
+  display: flex;
+  justify-content: center;
+}
+
+.summary-button-container button {
+  font-size: 0.8rem;
+  padding: 0.4rem 0.6rem;
+}
+
+.summary-button-container button:hover {
+  color: var(--light);
+}
+
+.recent-appointments-container,
+.summary-cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(20rem, 1fr));
   justify-items: center;
