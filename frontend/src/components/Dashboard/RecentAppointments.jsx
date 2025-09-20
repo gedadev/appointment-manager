@@ -61,25 +61,13 @@ export function RecentAppointments() {
 
 const AppointmentCard = ({ appointment }) => {
   const [activeStatusSelector, setActiveStatusSelector] = useState(false);
-  const { updateAppointment, error } = useAppointment();
+  const { updateAppointment, error, formatDate, formatCurrency } =
+    useAppointment();
 
-  const formatDate = (appDate) => {
-    const dateObj = new Date(appDate);
-    const [day, month, date, year] = [
-      String(dateObj.getUTCDay()),
-      String(dateObj.getUTCMonth()),
-      String(dateObj.getUTCDate()),
-      String(dateObj.getUTCFullYear()),
-    ];
+  const getDate = (appointmentDate) => {
+    const { day, month, date } = formatDate(appointmentDate);
 
     return `${days[day]}, ${months[month]} ${date}`;
-  };
-
-  const formatCurrency = (value) => {
-    return `$ ${(value / 100).toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })}`;
   };
 
   const handleStatusChange = () => {
@@ -106,7 +94,7 @@ const AppointmentCard = ({ appointment }) => {
       <h1>{appointment.customerName}</h1>
       <div className="appointment-details">
         <div>
-          <FiCalendar /> {formatDate(appointment.date)}
+          <FiCalendar /> {getDate(appointment.date)}
         </div>
         <div>
           <FiClock /> {appointment.time}

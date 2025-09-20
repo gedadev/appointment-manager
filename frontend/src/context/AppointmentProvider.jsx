@@ -247,6 +247,25 @@ export const AppointmentProvider = ({ children }) => {
     );
   };
 
+  const formatDate = (appointmentDate) => {
+    const dateObj = new Date(appointmentDate);
+    const [day, month, date, year] = [
+      String(dateObj.getUTCDay()),
+      String(dateObj.getUTCMonth()),
+      String(dateObj.getUTCDate()),
+      String(dateObj.getUTCFullYear()),
+    ];
+
+    return { day, month, date, year };
+  };
+
+  const formatCurrency = (value) => {
+    return `$ ${(value / 100).toLocaleString("en-US", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    })}`;
+  };
+
   const value = {
     loading,
     error,
@@ -258,6 +277,8 @@ export const AppointmentProvider = ({ children }) => {
     appointmentsFilters,
     getSummaryInfo,
     sortByDate,
+    formatDate,
+    formatCurrency,
   };
 
   return (
