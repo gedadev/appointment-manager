@@ -241,6 +241,12 @@ export const AppointmentProvider = ({ children }) => {
     return { lastMonthAppointments, upcomingAppointments, lastMonthRevenue };
   };
 
+  const sortByDate = (appointmentsList) => {
+    return appointmentsList.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+  };
+
   const value = {
     loading,
     error,
@@ -251,6 +257,7 @@ export const AppointmentProvider = ({ children }) => {
     handleAppointmentFilters,
     appointmentsFilters,
     getSummaryInfo,
+    sortByDate,
   };
 
   return (
