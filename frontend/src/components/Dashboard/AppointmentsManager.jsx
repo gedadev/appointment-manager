@@ -2,10 +2,13 @@ import { FiFileText, FiTrash2 } from "react-icons/fi";
 import { useAppointment } from "../../hooks/useAppointment";
 import { months } from "../../utils/main";
 import { useState } from "react";
+import { useFormValidations } from "../../hooks/useFormValidations";
 
 export function AppointmentsManager() {
-  const { appointments, sortByDate, formatDate, formatCurrency } =
+  const { appointments, sortByDate, formatDate, formatCurrency, formatTime } =
     useAppointment();
+  const { validateCustomerName, validateTime, formError } =
+    useFormValidations();
   const [selectedAppointment, setSelectedAppointment] = useState({});
 
   const selectAppointment = (appointment) => {
@@ -24,10 +27,41 @@ export function AppointmentsManager() {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    setSelectedAppointment((prev) => ({
-      ...prev,
+    switch (name) {
+      case "customerName":
+        validateCustomerName(value);
+        break;
+
+      case "time":
+        let cleanedTime = value.replace(/\D/g, "");
+        while (cleanedTime.startsWith("0")) {
+          cleanedTime = cleanedTime.replace("0", "");
+        }
+        if (cleanedTime.length > 4) return;
+
+        validateTime(cleanedTime);
+        setSelectedAppointment({
+          ...selectedAppointment,
+          [name]: cleanedTime,
+        });
+        return;
+
+      case "cost":
+        const cleanedCost = value.replace(/\D/g, "");
+        setSelectedAppointment({
+          ...selectedAppointment,
+          [name]: cleanedCost,
+        });
+        return;
+
+      default:
+        break;
+    }
+
+    setSelectedAppointment({
+      ...selectedAppointment,
       [name]: value,
-    }));
+    });
   };
 
   const handleSubmit = (e) => {
@@ -74,7 +108,7 @@ export function AppointmentsManager() {
                   id="time"
                   type="text"
                   name="time"
-                  value={selectedAppointment.time}
+                  value={formatTime(selectedAppointment.time)}
                   onChange={handleChange}
                 />
               </div>

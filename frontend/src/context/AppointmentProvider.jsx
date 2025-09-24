@@ -266,6 +266,13 @@ export const AppointmentProvider = ({ children }) => {
     })}`;
   };
 
+  const formatTime = (time) => {
+    const hours = time.slice(0, -2);
+    const minutes = time.slice(-2);
+
+    return `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`;
+  };
+
   const value = {
     loading,
     error,
@@ -279,6 +286,7 @@ export const AppointmentProvider = ({ children }) => {
     sortByDate,
     formatDate,
     formatCurrency,
+    formatTime,
   };
 
   return (

@@ -175,6 +175,22 @@ export const useFormValidations = () => {
     }
   };
 
+  const validateTime = (time) => {
+    const hours = time.slice(0, -2);
+    const minutes = time.slice(-2);
+
+    if (!time) {
+      setFormError({ message: "Enter a time", input: "time" });
+      return false;
+    } else if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
+      setFormError({ message: "Enter a valid time", input: "time" });
+      return false;
+    } else {
+      setFormError(null);
+      return true;
+    }
+  };
+
   return {
     validateForm,
     validateGeneralInfo,
@@ -185,6 +201,7 @@ export const useFormValidations = () => {
     validatePhone,
     validateCustomerName,
     validateDate,
+    validateTime,
     formError,
   };
 };
