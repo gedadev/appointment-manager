@@ -91,6 +91,9 @@ export function AppointmentsManager() {
                   value={selectedAppointment.customerName}
                   onChange={handleChange}
                 />
+                {formError && formError.input === "customerName" && (
+                  <span>{formError.message}</span>
+                )}
               </div>
               <div className="short-input">
                 <label htmlFor="date">Date:</label>
@@ -111,6 +114,9 @@ export function AppointmentsManager() {
                   value={formatTime(selectedAppointment.time)}
                   onChange={handleChange}
                 />
+                {formError && formError.input === "time" && (
+                  <span>{formError.message}</span>
+                )}
               </div>
               <div className="short-input">
                 <label htmlFor="cost">Cost:</label>

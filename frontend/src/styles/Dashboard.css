@@ -396,6 +396,7 @@
   min-width: 100%;
   padding: 0.5rem;
   font-size: 0.9rem;
+  position: relative;
 }
 
 .edit-form > .short-input {
@@ -428,4 +429,17 @@
   margin: auto;
   background-color: var(--accent-alt);
   color: var(--light);
+}
+
+.edit-form > div span {
+  position: absolute;
+  top: 90%;
+  right: 0.5rem;
+  background-color: var(--accent-alt);
+  color: var(--gray);
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.3rem 0.4rem var(--transparent);
+  z-index: 1;
 }
