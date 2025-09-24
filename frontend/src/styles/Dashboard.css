@@ -352,3 +352,80 @@
   position: static;
   color: var(--dark);
 }
+
+.edit-panel {
+  max-width: min(100%, 30rem);
+  margin: auto;
+  padding: 1rem;
+  background-color: var(--gray);
+  border-radius: 0.5rem;
+  box-shadow: 0 0.1rem 0.2rem var(--transparent);
+}
+
+.no-appointment {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.no-appointment > div {
+  opacity: 0.6;
+  font-size: 1.5rem;
+}
+
+.no-appointment > span {
+  opacity: 0.7;
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 0;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-form > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  min-width: 100%;
+  padding: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.edit-form > .short-input {
+  min-width: 50%;
+}
+
+.edit-form textarea {
+  height: 5rem;
+  resize: none;
+  background-color: var(--gray);
+  border: 0.1rem solid var(--transparent);
+  border-radius: 0.3rem;
+  padding: 0.4rem;
+  opacity: 0.7;
+}
+
+.edit-form input,
+.edit-form select {
+  background-color: var(--gray);
+  border: none;
+  border-bottom: 0.1rem solid var(--transparent);
+  padding: 0.2rem;
+  height: 100%;
+  opacity: 0.7;
+}
+
+.edit-form button {
+  max-width: max-content;
+  padding: 0.4rem 1rem;
+  margin: auto;
+  background-color: var(--accent-alt);
+  color: var(--light);
+}

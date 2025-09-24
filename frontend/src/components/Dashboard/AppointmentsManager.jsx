@@ -1,23 +1,138 @@
-import { FiTrash2 } from "react-icons/fi";
+import { FiFileText, FiTrash2 } from "react-icons/fi";
 import { useAppointment } from "../../hooks/useAppointment";
 import { months } from "../../utils/main";
+import { useState } from "react";
 
 export function AppointmentsManager() {
-  const { appointments, sortByDate } = useAppointment();
+  const { appointments, sortByDate, formatDate, formatCurrency } =
+    useAppointment();
+  const [selectedAppointment, setSelectedAppointment] = useState({});
+
+  const selectAppointment = (appointment) => {
+    setSelectedAppointment(appointment);
+  };
+
+  const getDate = (appointmentDate) => {
+    const { month, date, year } = formatDate(appointmentDate);
+
+    return `${year}-${String(Number(month) + 1).padStart(
+      2,
+      "0"
+    )}-${date.padStart(2, "0")}`;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    setSelectedAppointment((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
 
   return (
     <div>
+      <div className="edit-panel">
+        {!selectedAppointment._id ? (
+          <div className="no-appointment">
+            <div>
+              <FiFileText />
+            </div>
+            <span>Select an appointment to edit</span>
+          </div>
+        ) : (
+          <div>
+            <form className="edit-form" onSubmit={handleSubmit}>
+              <h3>Edit appointment</h3>
+              <div>
+                <label htmlFor="customerName">Customer Name:</label>
+                <input
+                  id="customerName"
+                  type="text"
+                  name="customerName"
+                  value={selectedAppointment.customerName}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="short-input">
+                <label htmlFor="date">Date:</label>
+                <input
+                  id="date"
+                  type="date"
+                  name="date"
+                  value={getDate(selectedAppointment.date)}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="short-input">
+                <label htmlFor="time">Time:</label>
+                <input
+                  id="time"
+                  type="text"
+                  name="time"
+                  value={selectedAppointment.time}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="short-input">
+                <label htmlFor="cost">Cost:</label>
+                <input
+                  id="cost"
+                  type="text"
+                  name="cost"
+                  value={formatCurrency(selectedAppointment.cost)}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="short-input">
+                <label htmlFor="status">Status:</label>
+                <select
+                  id="status"
+                  name="status"
+                  value={selectedAppointment.status}
+                  onChange={handleChange}
+                >
+                  <option value="pending">pending</option>
+                  <option value="confirmed">confirmed</option>
+                  <option value="cancelled">cancelled</option>
+                  <option value="completed">completed</option>
+                </select>
+              </div>
+              <div>
+                <label htmlFor="">Notes:</label>
+                <textarea
+                  id="notes"
+                  name="notes"
+                  value={selectedAppointment.notes}
+                  onChange={handleChange}
+                ></textarea>
+              </div>
+              <div>
+                <button>Update</button>
+              </div>
+            </form>
+          </div>
+        )}
+      </div>
       <div className="appointments-list">
         <h3>All appointments</h3>
         {sortByDate(appointments).map((appointment) => (
-          <AppointmentItem key={appointment._id} appointment={appointment} />
+          <AppointmentItem
+            key={appointment._id}
+            appointment={appointment}
+            selectAppointment={selectAppointment}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-const AppointmentItem = ({ appointment }) => {
+const AppointmentItem = ({ appointment, selectAppointment }) => {
   const { formatDate } = useAppointment();
 
   const getDate = (appointmentDate) => {
@@ -27,7 +142,10 @@ const AppointmentItem = ({ appointment }) => {
   };
 
   return (
-    <div className="appointment-item">
+    <div
+      className="appointment-item"
+      onClick={() => selectAppointment(appointment)}
+    >
       <div className="appointment-data">
         <h4>{appointment.customerName}</h4>
         <p>{getDate(appointment.date)}</p>
