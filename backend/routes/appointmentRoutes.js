@@ -84,15 +84,57 @@ router.get("/all", authUser, async (req, res) => {
 
 router.put("/update/:id", authUser, async (req, res) => {
   const { id } = req.params;
-  const { status } = req.body;
-
+  const { business, customer, customerName, date, time, cost, status, notes } =
+    req.body;
   const foundAppointment = await Appointment.findById(id);
+  const foundCustomer = await Customer.findOne({ customerName });
+  let updatedAppointment = {
+    customer,
+    date,
+    time,
+    cost,
+    status,
+    notes,
+  };
 
   if (!foundAppointment)
     return res.status(404).json({ message: "Appointment not found" });
 
+  if (!business) {
+    try {
+      await Appointment.findByIdAndUpdate(id, { status });
+
+      res.status(200).json({ message: "Status updated successfully" });
+    } catch (error) {
+      return res.status(500).json({ message: "Appointment update failed" });
+    }
+  }
+
+  if (!foundCustomer) {
+    try {
+      const newCustomer = await Customer.create({
+        business,
+        customerName,
+      });
+
+      updatedAppointment = {
+        ...updatedAppointment,
+        customer: newCustomer._id,
+      };
+    } catch (error) {
+      return res.status(500).json({ message: "Appointment update failed" });
+    }
+  }
+
+  if (foundCustomer?.id !== customer) {
+    updatedAppointment = {
+      ...updatedAppointment,
+      customer: foundCustomer._id,
+    };
+  }
+
   try {
-    await Appointment.findByIdAndUpdate(id, { status });
+    await Appointment.findByIdAndUpdate(id, updatedAppointment);
 
     res.status(200).json({ message: "Appointment updated successfully" });
   } catch (error) {
