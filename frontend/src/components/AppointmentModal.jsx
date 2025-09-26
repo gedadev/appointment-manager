@@ -4,6 +4,7 @@ import { useAppointment } from "../hooks/useAppointment";
 import { useState } from "react";
 import { FiXCircle } from "react-icons/fi";
 import { useFormValidations } from "../hooks/useFormValidations";
+import toast from "react-hot-toast";
 
 const getLocalDate = () => {
   const today = new Date();
@@ -19,13 +20,18 @@ export function AppointmentModal({ activeModal, toggleModal }) {
     businessName: userData ? userData.businessName : "",
     customerName: "",
     date: getLocalDate(),
-    time: "00:00",
+    time: "",
     cost: "",
     notes: "",
   });
-  const { addAppointment } = useAppointment();
-  const { validateCustomerName, validateDate, formError, validateForm } =
-    useFormValidations();
+  const { addAppointment, formatTime, formatCurrency } = useAppointment();
+  const {
+    validateCustomerName,
+    validateDate,
+    validateTime,
+    validateForm,
+    formError,
+  } = useFormValidations();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -34,16 +40,27 @@ export function AppointmentModal({ activeModal, toggleModal }) {
       case "customerName":
         validateCustomerName(value);
         break;
+
       case "date":
-        const date = value.split("T")[0];
-        const time = value.split("T")[1];
-        validateDate(date);
-        setFormData({ ...formData, date, time });
+        validateDate(value);
+        break;
+
+      case "time":
+        let cleanedTime = value.replace(/\D/g, "");
+        while (cleanedTime.startsWith("0")) {
+          cleanedTime = cleanedTime.replace("0", "");
+        }
+        if (cleanedTime.length > 4) return;
+
+        validateTime(cleanedTime);
+        setFormData({ ...formData, [name]: cleanedTime });
         return;
+
       case "cost":
         const cleanedValue = value.replace(/\D/g, "");
         setFormData({ ...formData, [name]: cleanedValue });
         return;
+
       default:
         break;
     }
@@ -51,30 +68,27 @@ export function AppointmentModal({ activeModal, toggleModal }) {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.businessName) formData.businessName = userData.businessName;
     const formIsValid = validateForm(formData);
 
     if (!formIsValid) return;
 
-    addAppointment(formData);
-    setFormData({
-      businessName: formData.businessName,
-      customerName: "",
-      date: getLocalDate(),
-      time: "00:00",
-      cost: "",
-      notes: "",
-    });
-    toggleModal();
-  };
+    const { success } = await addAppointment(formData);
 
-  const formatCurrency = (value) => {
-    return `$${(value / 100).toLocaleString("en-US", {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2,
-    })}`;
+    if (success) {
+      toast.success("Appointment created successfully");
+      setFormData({
+        businessName: formData.businessName,
+        customerName: "",
+        date: getLocalDate(),
+        time: "",
+        cost: "",
+        notes: "",
+      });
+      toggleModal();
+    }
   };
 
   return (
@@ -106,13 +120,26 @@ export function AppointmentModal({ activeModal, toggleModal }) {
           <div className="form-group">
             <label htmlFor="date">Date:</label>
             <input
-              type="datetime-local"
+              type="date"
               id="date"
               name="date"
               onChange={handleChange}
-              value={`${formData.date}T${formData.time}`}
+              value={formData.date}
             />
             {formError && formError.input === "date" && (
+              <span>{formError.message}</span>
+            )}
+          </div>
+          <div className="form-group">
+            <label htmlFor="date">Time:</label>
+            <input
+              type="text"
+              id="time"
+              name="time"
+              onChange={handleChange}
+              value={formatTime(formData.time)}
+            />
+            {formError && formError.input === "time" && (
               <span>{formError.message}</span>
             )}
           </div>
