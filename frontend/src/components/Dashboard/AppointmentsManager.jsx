@@ -3,11 +3,18 @@ import { useAppointment } from "../../hooks/useAppointment";
 import { months } from "../../utils/main";
 import { useState } from "react";
 import { useFormValidations } from "../../hooks/useFormValidations";
+import toast from "react-hot-toast";
 
 export function AppointmentsManager() {
-  const { appointments, sortByDate, formatDate, formatCurrency, formatTime } =
-    useAppointment();
-  const { validateCustomerName, validateTime, formError } =
+  const {
+    appointments,
+    sortByDate,
+    formatDate,
+    formatCurrency,
+    formatTime,
+    updateAppointment,
+  } = useAppointment();
+  const { validateCustomerName, validateTime, formError, validateForm } =
     useFormValidations();
   const [selectedAppointment, setSelectedAppointment] = useState({});
 
@@ -64,8 +71,25 @@ export function AppointmentsManager() {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    const formIsValid = validateForm({
+      customerName: selectedAppointment.customerName,
+      time: selectedAppointment.time,
+    });
+
+    if (!formIsValid) return;
+
+    const success = await updateAppointment(
+      selectedAppointment._id,
+      selectedAppointment
+    );
+
+    if (success) {
+      toast.success("Status updated successfully");
+    } else {
+      toast.error(error);
+    }
   };
 
   return (

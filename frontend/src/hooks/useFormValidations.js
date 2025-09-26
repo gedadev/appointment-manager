@@ -107,6 +107,8 @@ export const useFormValidations = () => {
               return validateCustomerName(value);
             case "date":
               return validateDate(value);
+            case "time":
+              return validateTime(value);
             default:
               return true;
           }
