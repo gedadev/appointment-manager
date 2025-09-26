@@ -22,6 +22,10 @@ export function AppointmentsManager() {
     setSelectedAppointment(appointment);
   };
 
+  const resetSelectedAppointment = () => {
+    setSelectedAppointment({});
+  };
+
   const getDate = (appointmentDate) => {
     const { month, date, year } = formatDate(appointmentDate);
 
@@ -188,6 +192,7 @@ export function AppointmentsManager() {
           <AppointmentItem
             key={appointment._id}
             appointment={appointment}
+            resetSelectedAppointment={resetSelectedAppointment}
             selectAppointment={selectAppointment}
           />
         ))}
@@ -196,8 +201,12 @@ export function AppointmentsManager() {
   );
 }
 
-const AppointmentItem = ({ appointment, selectAppointment }) => {
-  const { formatDate } = useAppointment();
+const AppointmentItem = ({
+  appointment,
+  selectAppointment,
+  resetSelectedAppointment,
+}) => {
+  const { formatDate, deleteAppointment } = useAppointment();
 
   const getDate = (appointmentDate) => {
     const { month, date, year } = formatDate(appointmentDate);
@@ -205,12 +214,23 @@ const AppointmentItem = ({ appointment, selectAppointment }) => {
     return `${months[month]} ${date}, ${year}`;
   };
 
+  const handleDelete = async () => {
+    const success = await deleteAppointment(appointment._id);
+
+    if (success) {
+      resetSelectedAppointment();
+      toast.success("Appointment deleted successfully");
+    } else {
+      toast.error(error);
+    }
+  };
+
   return (
-    <div
-      className="appointment-item"
-      onClick={() => selectAppointment(appointment)}
-    >
-      <div className="appointment-data">
+    <div className="appointment-item">
+      <div
+        className="appointment-data"
+        onClick={() => selectAppointment(appointment)}
+      >
         <h4>{appointment.customerName}</h4>
         <p>{getDate(appointment.date)}</p>
         <div className="status-container">
@@ -218,7 +238,7 @@ const AppointmentItem = ({ appointment, selectAppointment }) => {
         </div>
       </div>
       <div className="delete-appointment">
-        <FiTrash2 />
+        <FiTrash2 onClick={handleDelete} />
       </div>
     </div>
   );

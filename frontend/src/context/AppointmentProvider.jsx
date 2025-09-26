@@ -80,6 +80,27 @@ export const AppointmentProvider = ({ children }) => {
     }
   };
 
+  const deleteAppointment = async (id) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await request(`${endpoints.appointment.delete}/${id}`, {
+        method: "DELETE",
+      });
+
+      if (response instanceof Error) throw response;
+
+      fetchAppointments();
+      return { success: true };
+    } catch (error) {
+      setError(error.message);
+      return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleAppointmentFilters = (filterName, filterValue, checked) => {
     const updateFilters = () => {
       const keys = Object.keys(appointmentsFilters);
@@ -280,6 +301,7 @@ export const AppointmentProvider = ({ children }) => {
     appointments,
     filteredAppointments,
     updateAppointment,
+    deleteAppointment,
     handleAppointmentFilters,
     appointmentsFilters,
     getSummaryInfo,
