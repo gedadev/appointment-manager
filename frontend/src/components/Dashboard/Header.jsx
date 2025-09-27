@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FiCalendar,
   FiClock,
@@ -20,6 +20,19 @@ export function Header() {
   const toggleModal = () => setActiveModal(!activeModal);
 
   const toggleMenu = () => setActiveMenu(!activeMenu);
+
+  useEffect(() => {
+    const onEscape = (e) => {
+      if (e.key === "Escape") {
+        setActiveMenu(false);
+        setActiveModal(false);
+      }
+    };
+
+    window.addEventListener("keydown", onEscape);
+
+    return () => window.removeEventListener("keydown", onEscape);
+  }, []);
 
   return (
     <header className="header">
