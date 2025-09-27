@@ -29,11 +29,6 @@ export const Summary = () => {
           <span>{upcomingAppointments.length}</span>
         </div>
       </div>
-      <div className="summary-button-container">
-        <Link to={"./appointments"}>
-          <button>See all appointments</button>
-        </Link>
-      </div>
     </div>
   );
 };

@@ -3,6 +3,7 @@ import {
   FiCalendar,
   FiClock,
   FiFilePlus,
+  FiFileText,
   FiLogOut,
   FiSettings,
   FiUser,
@@ -37,15 +38,34 @@ export function Header() {
         <button className="settings-button" onClick={toggleMenu}>
           <FiSettings />
         </button>
-        <HeaderMenu activeMenu={activeMenu} />
+        <HeaderMenu activeMenu={activeMenu} toggleMenu={toggleMenu} />
       </div>
       <AppointmentModal activeModal={activeModal} toggleModal={toggleModal} />
     </header>
   );
 }
 
-const HeaderMenu = ({ activeMenu }) => {
+const HeaderMenu = ({ activeMenu, toggleMenu }) => {
   const { logout } = useAuth();
+
+  const menuItems = [
+    { url: "/profile", icon: <FiUser />, label: "My Profile" },
+    { url: "/dashboard", icon: <MdDashboard />, label: "Dashboard" },
+    { url: "/profile/hours", icon: <FiClock />, label: "Manage Working Hours" },
+    {
+      url: "/dashboard/appointments",
+      icon: <FiFileText />,
+      label: "Manage Appointments",
+    },
+    { url: "/", icon: <FiLogOut />, label: "Logout" },
+  ];
+
+  const handleClick = (e) => {
+    const { target } = e;
+
+    if (target.textContent === "Logout") logout();
+    toggleMenu();
+  };
 
   return (
     <div
@@ -62,30 +82,14 @@ const HeaderMenu = ({ activeMenu }) => {
     >
       <span>Your Settings</span>
       <ul>
-        <Link to={"/dashboard"}>
-          <li>
-            <MdDashboard />
-            Dashboard
-          </li>
-        </Link>
-        <Link to={"/profile"}>
-          <li>
-            <FiUser />
-            My Profile
-          </li>
-        </Link>
-        <Link to={"/profile/hours"}>
-          <li>
-            <FiClock />
-            Manage Working Hours
-          </li>
-        </Link>
-        <Link to={"/"} onClick={logout}>
-          <li>
-            <FiLogOut />
-            Logout
-          </li>
-        </Link>
+        {menuItems.map((item) => (
+          <Link key={item.label} to={item.url} onClick={handleClick}>
+            <li>
+              {item.icon}
+              {item.label}
+            </li>
+          </Link>
+        ))}
       </ul>
     </div>
   );
