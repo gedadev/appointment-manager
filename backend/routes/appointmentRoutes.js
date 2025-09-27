@@ -55,10 +55,10 @@ router.post("/new", authUser, async (req, res) => {
 });
 
 router.get("/all", authUser, async (req, res) => {
-  const { businessName } = req.user;
-  const foundBusinessId = await User.findOne({ businessName }, { _id: 1 });
+  const id = req.user._id;
+
   const appointments = await Appointment.find({
-    business: foundBusinessId._id,
+    business: id,
   });
 
   if (!appointments)
@@ -104,7 +104,7 @@ router.put("/update/:id", authUser, async (req, res) => {
     try {
       await Appointment.findByIdAndUpdate(id, { status });
 
-      res.status(200).json({ message: "Status updated successfully" });
+      return res.status(200).json({ message: "Status updated successfully" });
     } catch (error) {
       return res.status(500).json({ message: "Appointment update failed" });
     }
@@ -157,20 +157,5 @@ router.delete("/delete/:id", authUser, async (req, res) => {
     res.status(500).json({ message: "Appointment deletion failed" });
   }
 });
-
-router.get("/customers", authUser, async (req, res) => {
-  const { businessName } = req.body;
-  const foundBusinessId = await User.findOne({ businessName }, { _id: 1 });
-  const customers = await Customer.find({
-    business: foundBusinessId._id,
-  });
-
-  if (!customers)
-    return res.status(404).json({ message: "Customers not found" });
-
-  res.status(200).json(customers);
-});
-
-router.put("/update/:id", authUser, async (req, res) => {});
 
 module.exports = router;
