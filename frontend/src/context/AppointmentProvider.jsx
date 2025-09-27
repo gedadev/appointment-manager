@@ -9,6 +9,7 @@ export const AppointmentProvider = ({ children }) => {
   const [appointments, setAppointments] = useState([]);
   const [filteredAppointments, setFilteredAppointments] = useState([]);
   const [appointmentsFilters, setAppointmentsFilters] = useState({});
+  const [customers, setCustomers] = useState([]);
   const { endpoints, request } = useApi();
   const { userData } = useAuth();
 
@@ -34,7 +35,28 @@ export const AppointmentProvider = ({ children }) => {
 
   useEffect(() => {
     userData && fetchAppointments();
+    userData && fetchCustomers();
   }, [userData]);
+
+  const fetchCustomers = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await request(endpoints.customer.all, {
+        method: "GET",
+      });
+
+      if (response instanceof Error) throw response;
+      setCustomers(response);
+      return { success: true };
+    } catch (error) {
+      setError(error.message);
+      return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const addAppointment = async (data) => {
     try {
@@ -304,6 +326,7 @@ export const AppointmentProvider = ({ children }) => {
     deleteAppointment,
     handleAppointmentFilters,
     appointmentsFilters,
+    customers,
     getSummaryInfo,
     sortByDate,
     formatDate,
