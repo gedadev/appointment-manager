@@ -98,93 +98,95 @@ export function AppointmentsManager() {
 
   return (
     <div>
-      <div className="edit-panel">
-        {!selectedAppointment._id ? (
-          <div className="no-appointment">
-            <div>
-              <FiFileText />
+      <div className="edit-container">
+        <div className="edit-panel">
+          {!selectedAppointment._id ? (
+            <div className="no-appointment">
+              <div>
+                <FiFileText />
+              </div>
+              <span>Select an appointment to edit</span>
             </div>
-            <span>Select an appointment to edit</span>
-          </div>
-        ) : (
-          <div>
-            <form className="edit-form" onSubmit={handleSubmit}>
-              <h3>Edit appointment</h3>
-              <div>
-                <label htmlFor="customerName">Customer Name:</label>
-                <input
-                  id="customerName"
-                  type="text"
-                  name="customerName"
-                  value={selectedAppointment.customerName}
-                  onChange={handleChange}
-                />
-                {formError && formError.input === "customerName" && (
-                  <span>{formError.message}</span>
-                )}
-              </div>
-              <div className="short-input">
-                <label htmlFor="date">Date:</label>
-                <input
-                  id="date"
-                  type="date"
-                  name="date"
-                  value={getDate(selectedAppointment.date)}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="short-input">
-                <label htmlFor="time">Time:</label>
-                <input
-                  id="time"
-                  type="text"
-                  name="time"
-                  value={formatTime(selectedAppointment.time)}
-                  onChange={handleChange}
-                />
-                {formError && formError.input === "time" && (
-                  <span>{formError.message}</span>
-                )}
-              </div>
-              <div className="short-input">
-                <label htmlFor="cost">Cost:</label>
-                <input
-                  id="cost"
-                  type="text"
-                  name="cost"
-                  value={formatCurrency(selectedAppointment.cost)}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="short-input">
-                <label htmlFor="status">Status:</label>
-                <select
-                  id="status"
-                  name="status"
-                  value={selectedAppointment.status}
-                  onChange={handleChange}
-                >
-                  <option value="pending">pending</option>
-                  <option value="confirmed">confirmed</option>
-                  <option value="cancelled">cancelled</option>
-                  <option value="completed">completed</option>
-                </select>
-              </div>
-              <div>
-                <label htmlFor="">Notes:</label>
-                <textarea
-                  id="notes"
-                  name="notes"
-                  value={selectedAppointment.notes}
-                  onChange={handleChange}
-                ></textarea>
-              </div>
-              <div>
-                <button>Update</button>
-              </div>
-            </form>
-          </div>
-        )}
+          ) : (
+            <div>
+              <form className="edit-form" onSubmit={handleSubmit}>
+                <h3>Edit appointment</h3>
+                <div>
+                  <label htmlFor="customerName">Customer Name:</label>
+                  <input
+                    id="customerName"
+                    type="text"
+                    name="customerName"
+                    value={selectedAppointment.customerName}
+                    onChange={handleChange}
+                  />
+                  {formError && formError.input === "customerName" && (
+                    <span>{formError.message}</span>
+                  )}
+                </div>
+                <div className="short-input">
+                  <label htmlFor="date">Date:</label>
+                  <input
+                    id="date"
+                    type="date"
+                    name="date"
+                    value={getDate(selectedAppointment.date)}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="short-input">
+                  <label htmlFor="time">Time:</label>
+                  <input
+                    id="time"
+                    type="text"
+                    name="time"
+                    value={formatTime(selectedAppointment.time)}
+                    onChange={handleChange}
+                  />
+                  {formError && formError.input === "time" && (
+                    <span>{formError.message}</span>
+                  )}
+                </div>
+                <div className="short-input">
+                  <label htmlFor="cost">Cost:</label>
+                  <input
+                    id="cost"
+                    type="text"
+                    name="cost"
+                    value={formatCurrency(selectedAppointment.cost)}
+                    onChange={handleChange}
+                  />
+                </div>
+                <div className="short-input">
+                  <label htmlFor="status">Status:</label>
+                  <select
+                    id="status"
+                    name="status"
+                    value={selectedAppointment.status}
+                    onChange={handleChange}
+                  >
+                    <option value="pending">pending</option>
+                    <option value="confirmed">confirmed</option>
+                    <option value="cancelled">cancelled</option>
+                    <option value="completed">completed</option>
+                  </select>
+                </div>
+                <div>
+                  <label htmlFor="">Notes:</label>
+                  <textarea
+                    id="notes"
+                    name="notes"
+                    value={selectedAppointment.notes}
+                    onChange={handleChange}
+                  ></textarea>
+                </div>
+                <div>
+                  <button>Update</button>
+                </div>
+              </form>
+            </div>
+          )}
+        </div>
       </div>
       <div className="appointments-list">
         <h3>All appointments</h3>

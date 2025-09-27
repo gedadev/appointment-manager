@@ -199,7 +199,10 @@
   justify-content: space-between;
   align-items: center;
   gap: 1rem;
-  position: relative;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--light);
 }
 
 .search-bar {
@@ -351,6 +354,14 @@
   cursor: auto;
   position: static;
   color: var(--dark);
+}
+
+.edit-container {
+  position: sticky;
+  top: 0;
+  background-color: var(--light);
+  z-index: 1;
+  padding: 1rem 0;
 }
 
 .edit-panel {
