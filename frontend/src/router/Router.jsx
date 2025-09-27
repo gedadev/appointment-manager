@@ -9,6 +9,7 @@ import { AdvancedInfo } from "../components/Profile/AdvancedInfo";
 import { Dashboard } from "../pages/Dashboard";
 import { RecentAppointments } from "../components/Dashboard/RecentAppointments";
 import { AppointmentsManager } from "../components/Dashboard/AppointmentsManager";
+import { CustomersManager } from "../components/Dashboard/CustomersManager";
 
 const router = createBrowserRouter([
   {
@@ -59,7 +60,7 @@ const router = createBrowserRouter([
       },
       {
         path: "customers",
-        element: <></>,
+        element: <CustomersManager />,
       },
     ],
   },
