@@ -7,6 +7,7 @@ import {
   FiLogOut,
   FiSettings,
   FiUser,
+  FiUsers,
 } from "react-icons/fi";
 import { AppointmentModal } from "../AppointmentModal";
 import { Link } from "react-router-dom";
@@ -69,6 +70,11 @@ const HeaderMenu = ({ activeMenu, toggleMenu }) => {
       url: "/dashboard/appointments",
       icon: <FiFileText />,
       label: "Manage Appointments",
+    },
+    {
+      url: "/dashboard/customers",
+      icon: <FiUsers />,
+      label: "Manage Customers",
     },
     { url: "/", icon: <FiLogOut />, label: "Logout" },
   ];
