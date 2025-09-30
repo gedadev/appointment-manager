@@ -351,16 +351,28 @@ export const AppointmentProvider = ({ children }) => {
         );
 
       case "recent-date":
-        return items.toSorted(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
+        return items.toSorted((a, b) => {
+          const dateA = a.date
+            ? new Date(a.date).getTime()
+            : new Date(a.createdAt).getTime();
+          const dateB = b.date
+            ? new Date(b.date).getTime()
+            : new Date(b.createdAt).getTime();
+
+          return dateB - dateA;
+        });
 
       case "oldest-date":
-        return items.toSorted(
-          (a, b) =>
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
+        return items.toSorted((a, b) => {
+          const dateA = a.date
+            ? new Date(a.date).getTime()
+            : new Date(a.createdAt).getTime();
+          const dateB = b.date
+            ? new Date(b.date).getTime()
+            : new Date(b.createdAt).getTime();
+
+          return dateA - dateB;
+        });
 
       default:
         return items;

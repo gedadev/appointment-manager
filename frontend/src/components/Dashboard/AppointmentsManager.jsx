@@ -1,14 +1,14 @@
 import { FiFileText, FiTrash2 } from "react-icons/fi";
 import { useAppointment } from "../../hooks/useAppointment";
 import { months } from "../../utils/main";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormValidations } from "../../hooks/useFormValidations";
 import toast from "react-hot-toast";
 
 export function AppointmentsManager() {
   const {
     appointments,
-    sortByDate,
+    sortItems,
     formatDate,
     formatCurrency,
     formatTime,
@@ -17,6 +17,16 @@ export function AppointmentsManager() {
   const { validateCustomerName, validateTime, formError, validateForm } =
     useFormValidations();
   const [selectedAppointment, setSelectedAppointment] = useState({});
+  const [sortedAppointments, setSortedAppointments] = useState([]);
+
+  useEffect(() => {
+    sortAppointments("recent-date");
+  }, [appointments]);
+
+  const sortAppointments = (sortType) => {
+    const sorted = sortItems(appointments, sortType);
+    setSortedAppointments(sorted);
+  };
 
   const selectAppointment = (appointment) => {
     setSelectedAppointment(appointment);
@@ -189,8 +199,23 @@ export function AppointmentsManager() {
         </div>
       </div>
       <div className="appointments-list">
-        <h3>All appointments</h3>
-        {sortByDate(appointments).map((appointment) => (
+        <div className="appointments-header">
+          <h3>All appointments</h3>
+          <div>
+            <label htmlFor="">Sort by:</label>
+            <select
+              name="sort-appointments"
+              defaultValue={"recent-date"}
+              onChange={(e) => sortAppointments(e.target.value)}
+            >
+              <option value="name-a">Name [A - Z]</option>
+              <option value="name-z">Name [Z - A]</option>
+              <option value="recent-date">Recent date</option>
+              <option value="oldest-date">Oldest date</option>
+            </select>
+          </div>
+        </div>
+        {sortedAppointments.map((appointment) => (
           <AppointmentItem
             key={appointment._id}
             appointment={appointment}
