@@ -14,12 +14,8 @@ import { AppointmentFilters } from "./AppointmentFilters";
 
 export function RecentAppointments() {
   const [activeModal, setActiveModal] = useState(false);
-  const {
-    appointments,
-    filteredAppointments,
-    appointmentsFilters,
-    sortByDate,
-  } = useAppointment();
+  const { appointments, filteredAppointments, appointmentsFilters, sortItems } =
+    useAppointment();
 
   const toggleModal = () => setActiveModal(!activeModal);
 
@@ -28,10 +24,10 @@ export function RecentAppointments() {
       Object.keys(appointmentsFilters).length > 0 ||
       filteredAppointments.length > 0
     ) {
-      return sortByDate(filteredAppointments);
+      return sortItems(filteredAppointments, "recent-date");
     }
 
-    return sortByDate(appointments);
+    return sortItems(appointments, "recent-date");
   };
 
   return (

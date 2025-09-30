@@ -332,12 +332,6 @@ export const AppointmentProvider = ({ children }) => {
     return `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`;
   };
 
-  const sortByDate = (appointmentsList) => {
-    return appointmentsList.sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
-  };
-
   const sortItems = (items, sortType) => {
     switch (sortType) {
       case "name-a":
@@ -382,17 +376,16 @@ export const AppointmentProvider = ({ children }) => {
   const value = {
     loading,
     error,
-    addAppointment,
     appointments,
     filteredAppointments,
+    addAppointment,
     updateAppointment,
     deleteAppointment,
-    handleAppointmentFilters,
     appointmentsFilters,
+    handleAppointmentFilters,
     customers,
     updateCustomer,
     getSummaryInfo,
-    sortByDate,
     formatDate,
     formatCurrency,
     formatTime,
