@@ -306,12 +306,6 @@ export const AppointmentProvider = ({ children }) => {
     return { lastMonthAppointments, upcomingAppointments, lastMonthRevenue };
   };
 
-  const sortByDate = (appointmentsList) => {
-    return appointmentsList.sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    );
-  };
-
   const formatDate = (appointmentDate) => {
     const dateObj = new Date(appointmentDate);
     const [day, month, date, year] = [
@@ -338,6 +332,41 @@ export const AppointmentProvider = ({ children }) => {
     return `${hours.padStart(2, "0")}:${minutes.padStart(2, "0")}`;
   };
 
+  const sortByDate = (appointmentsList) => {
+    return appointmentsList.sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    );
+  };
+
+  const sortItems = (items, sortType) => {
+    switch (sortType) {
+      case "name-a":
+        return items.toSorted((a, b) =>
+          a.customerName.localeCompare(b.customerName)
+        );
+
+      case "name-z":
+        return items.toSorted((a, b) =>
+          b.customerName.localeCompare(a.customerName)
+        );
+
+      case "recent-date":
+        return items.toSorted(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+
+      case "oldest-date":
+        return items.toSorted(
+          (a, b) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+
+      default:
+        return items;
+    }
+  };
+
   const value = {
     loading,
     error,
@@ -355,6 +384,7 @@ export const AppointmentProvider = ({ children }) => {
     formatDate,
     formatCurrency,
     formatTime,
+    sortItems,
   };
 
   return (

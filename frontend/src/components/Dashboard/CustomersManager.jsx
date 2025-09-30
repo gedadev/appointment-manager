@@ -7,7 +7,7 @@ import { useAuth } from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 
 export function CustomersManager() {
-  const { customers } = useAppointment();
+  const { customers, sortItems } = useAppointment();
   const [sortedCustomers, setSortedCustomers] = useState([]);
 
   useEffect(() => {
@@ -15,41 +15,8 @@ export function CustomersManager() {
   }, [customers]);
 
   const sortCustomers = (sortType) => {
-    switch (sortType) {
-      case "name-a":
-        const sortedA = customers.toSorted((a, b) =>
-          a.customerName.localeCompare(b.customerName)
-        );
-        setSortedCustomers(sortedA);
-        break;
-
-      case "name-z":
-        const sortedZ = customers.toSorted((a, b) =>
-          b.customerName.localeCompare(a.customerName)
-        );
-        setSortedCustomers(sortedZ);
-        break;
-
-      case "recent-date":
-        const sortedRecent = customers.toSorted(
-          (a, b) =>
-            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-        );
-        setSortedCustomers(sortedRecent);
-        break;
-
-      case "oldest-date":
-        const sortedOldest = customers.toSorted(
-          (a, b) =>
-            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
-        );
-        setSortedCustomers(sortedOldest);
-        break;
-
-      default:
-        setSortedCustomers(customers);
-        break;
-    }
+    const sorted = sortItems(customers, sortType);
+    setSortedCustomers(sorted);
   };
 
   return (
