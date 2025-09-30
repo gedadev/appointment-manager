@@ -1,7 +1,10 @@
 import { FiChevronsDown, FiChevronsUp } from "react-icons/fi";
 import { useAppointment } from "../../hooks/useAppointment";
-import { months } from "../../utils/main";
-import { useState } from "react";
+import { countries, months } from "../../utils/main";
+import { use, useState } from "react";
+import { useFormValidations } from "../../hooks/useFormValidations";
+import { useAuth } from "../../hooks/useAuth";
+import toast from "react-hot-toast";
 
 export function CustomersManager() {
   const { customers } = useAppointment();
@@ -19,13 +22,73 @@ export function CustomersManager() {
 }
 
 const CustomerItem = ({ customer }) => {
-  const { formatDate } = useAppointment();
+  const { formatDate, updateCustomer } = useAppointment();
   const [activeDetails, setActiveDetails] = useState(false);
+  const [customerData, setCustomerData] = useState({
+    phone: customer.phone ? customer.phone : "",
+    email: customer.email ? customer.email : "",
+    notes: customer.notes ? customer.notes : "",
+  });
+  const { validateCustomerEmail, validatePhone, validateForm, formError } =
+    useFormValidations();
+  const { userData } = useAuth();
 
   const getDate = (appointmentDate) => {
     const { month, date, year } = formatDate(appointmentDate);
 
     return `${months[month]} ${date}, ${year}`;
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const container = e.target.parentNode;
+
+    switch (name) {
+      case "email":
+        validateCustomerEmail(value);
+        break;
+
+      case "phone":
+        const cleanedValue = value.replace(/\D/g, "");
+        const location = container.querySelector("select")?.value;
+        validatePhone(cleanedValue, location);
+        setCustomerData({
+          ...customerData,
+          [name]: cleanedValue,
+        });
+        return;
+
+      case "code":
+        const phone = container.querySelector("input")?.value;
+        validatePhone(phone, value);
+        break;
+
+      default:
+        break;
+    }
+
+    setCustomerData({
+      ...customerData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const formIsValid = validateForm({
+      customerEmail: customerData.email,
+      phone: customerData.phone,
+    });
+
+    if (!formIsValid) return;
+
+    const success = updateCustomer(customer._id, customerData);
+
+    if (success) {
+      toast.success("Customer updated successfully");
+    } else {
+      toast.error(error);
+    }
   };
 
   return (
@@ -62,18 +125,54 @@ const CustomerItem = ({ customer }) => {
           marginTop: activeDetails ? "0.5rem" : "0",
         }}
       >
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className="short-input">
             <label>Email:</label>
-            <input type="text" name="email" value={customer.email} />
+            <input
+              type="text"
+              name="email"
+              value={customerData.email}
+              onChange={handleChange}
+            />
+            {formError && formError.input === "email" && (
+              <span>{formError.message}</span>
+            )}
           </div>
           <div className="short-input">
             <label>Phone:</label>
-            <input type="text" name="phone" value={customer.phone} />
+            <select
+              id="code"
+              name="code"
+              defaultValue={userData?.location}
+              onChange={handleChange}
+            >
+              {countries.map(
+                (country) =>
+                  country.code && (
+                    <option key={country.code} value={country.code}>
+                      {`${country.emoji} (${country.phoneCode})`}
+                    </option>
+                  )
+              )}
+            </select>
+            <input
+              id="phone"
+              type="text"
+              name="phone"
+              value={customerData.phone}
+              onChange={handleChange}
+            />
+            {formError && formError.input === "phone" && (
+              <span>{formError.message}</span>
+            )}
           </div>
           <div>
             <label>Notes:</label>
-            <textarea name="notes">{customer.notes}</textarea>
+            <textarea
+              name="notes"
+              value={customerData.notes}
+              onChange={handleChange}
+            />
           </div>
           <button>Update</button>
         </form>

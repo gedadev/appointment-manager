@@ -551,6 +551,7 @@
   padding: 0.5rem;
   gap: 0.5rem;
   align-items: center;
+  position: relative;
 }
 
 .customer-details .short-input {
@@ -583,4 +584,24 @@
   resize: none;
   border: 0.1rem solid var(--transparent);
   border-radius: 0.3rem;
+}
+
+.customer-details select {
+  background-color: var(--gray);
+  border: none;
+  text-align: center;
+  cursor: pointer;
+}
+
+.customer-details span {
+  position: absolute;
+  top: 90%;
+  right: 0.5rem;
+  background-color: var(--accent-alt);
+  color: var(--gray);
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+  border-radius: 0.3rem;
+  box-shadow: 0 0.3rem 0.4rem var(--transparent);
+  z-index: 1;
 }

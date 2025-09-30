@@ -109,6 +109,8 @@ export const useFormValidations = () => {
               return validateDate(value);
             case "time":
               return validateTime(value);
+            case "customerEmail":
+              return validateCustomerEmail(value);
             default:
               return true;
           }
@@ -193,6 +195,21 @@ export const useFormValidations = () => {
     }
   };
 
+  const validateCustomerEmail = (email) => {
+    const emailRegex = /\b[\w.-]+@[\w.-]+\.\w{2,4}\b/;
+
+    if (!email) {
+      setFormError(null);
+      return true;
+    } else if (!emailRegex.test(email)) {
+      setFormError({ message: "Enter a valid email", input: "email" });
+      return false;
+    } else {
+      setFormError(null);
+      return true;
+    }
+  };
+
   return {
     validateForm,
     validateGeneralInfo,
@@ -202,6 +219,7 @@ export const useFormValidations = () => {
     validateBusinessName,
     validatePhone,
     validateCustomerName,
+    validateCustomerEmail,
     validateDate,
     validateTime,
     formError,
