@@ -1,19 +1,77 @@
 import { FiChevronsDown, FiChevronsUp } from "react-icons/fi";
 import { useAppointment } from "../../hooks/useAppointment";
 import { countries, months } from "../../utils/main";
-import { use, useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormValidations } from "../../hooks/useFormValidations";
 import { useAuth } from "../../hooks/useAuth";
 import toast from "react-hot-toast";
 
 export function CustomersManager() {
   const { customers } = useAppointment();
+  const [sortedCustomers, setSortedCustomers] = useState([]);
+
+  useEffect(() => {
+    sortCustomers("name-a");
+  }, [customers]);
+
+  const sortCustomers = (sortType) => {
+    switch (sortType) {
+      case "name-a":
+        const sortedA = customers.toSorted((a, b) =>
+          a.customerName.localeCompare(b.customerName)
+        );
+        setSortedCustomers(sortedA);
+        break;
+
+      case "name-z":
+        const sortedZ = customers.toSorted((a, b) =>
+          b.customerName.localeCompare(a.customerName)
+        );
+        setSortedCustomers(sortedZ);
+        break;
+
+      case "recent-date":
+        const sortedRecent = customers.toSorted(
+          (a, b) =>
+            new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        setSortedCustomers(sortedRecent);
+        break;
+
+      case "oldest-date":
+        const sortedOldest = customers.toSorted(
+          (a, b) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+        setSortedCustomers(sortedOldest);
+        break;
+
+      default:
+        setSortedCustomers(customers);
+        break;
+    }
+  };
 
   return (
     <div>
       <div className="customers-list">
-        <h3>All customers</h3>
-        {customers.map((customer) => (
+        <div className="customers-header">
+          <h3>All customers</h3>
+          <div>
+            <label htmlFor="">Sort by:</label>
+            <select
+              name="sort-customers"
+              defaultValue={"name-a"}
+              onChange={(e) => sortCustomers(e.target.value)}
+            >
+              <option value="name-a">Name [A - Z]</option>
+              <option value="name-z">Name [Z - A]</option>
+              <option value="recent-date">Recent joined</option>
+              <option value="oldest-date">Oldest joined</option>
+            </select>
+          </div>
+        </div>
+        {sortedCustomers.map((customer) => (
           <CustomerItem key={customer._id} customer={customer}></CustomerItem>
         ))}
       </div>
