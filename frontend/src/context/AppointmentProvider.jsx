@@ -33,11 +33,6 @@ export const AppointmentProvider = ({ children }) => {
     }
   };
 
-  useEffect(() => {
-    userData && fetchAppointments();
-    userData && fetchCustomers();
-  }, [userData]);
-
   const fetchCustomers = async () => {
     try {
       setLoading(true);
@@ -57,6 +52,11 @@ export const AppointmentProvider = ({ children }) => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    userData && fetchAppointments();
+    userData && fetchCustomers();
+  }, [userData]);
 
   const updateCustomer = async (id, data) => {
     try {
@@ -93,6 +93,7 @@ export const AppointmentProvider = ({ children }) => {
       if (response instanceof Error) throw response;
 
       fetchAppointments();
+      fetchCustomers();
       return { success: true };
     } catch (error) {
       setError(error.message);
@@ -183,7 +184,6 @@ export const AppointmentProvider = ({ children }) => {
     if (Object.keys(newFilters).length === 0)
       setFilteredAppointments(appointments);
 
-    console.log(newFilters);
     filterAppointments(newFilters);
 
     setAppointmentsFilters(newFilters);
