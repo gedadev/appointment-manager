@@ -58,6 +58,28 @@ export const AppointmentProvider = ({ children }) => {
     }
   };
 
+  const updateCustomer = async (id, data) => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const response = await request(`${endpoints.customer.update}/${id}`, {
+        method: "PUT",
+        body: JSON.stringify({ ...data }),
+      });
+
+      if (response instanceof Error) throw response;
+
+      fetchCustomers();
+      return { success: true };
+    } catch (error) {
+      setError(error.message);
+      return { success: false };
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const addAppointment = async (data) => {
     try {
       setLoading(true);
@@ -327,6 +349,7 @@ export const AppointmentProvider = ({ children }) => {
     handleAppointmentFilters,
     appointmentsFilters,
     customers,
+    updateCustomer,
     getSummaryInfo,
     sortByDate,
     formatDate,

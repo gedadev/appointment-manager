@@ -18,9 +18,13 @@ const API_CONFIG = {
     appointment: {
       new: "/appointment/new",
       all: "/appointment/all",
-      customers: "/appointment/customers",
       update: "/appointment/update",
       delete: "/appointment/delete",
+    },
+    customer: {
+      all: "/customer/all",
+      update: "/customer/update",
+      delete: "/customer/delete",
     },
   },
   defaultHeaders: {
